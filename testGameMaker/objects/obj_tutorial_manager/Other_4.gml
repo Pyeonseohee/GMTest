@@ -1,6 +1,6 @@
 /// @description Insert description here
 // You can write your code in this editor
-
+// 트
 show_debug_message("Toturial Room start!!!!");
 global.instance_player1 = instance_create_layer(960, 100, "Instances", obj_player1, {image_xscale: 2, image_yscale: 2});
 global.instance_player2 = instance_create_layer(960, 100, "Instances", obj_player2, {image_xscale: 2, image_yscale: 2, image_blend: c_yellow});
