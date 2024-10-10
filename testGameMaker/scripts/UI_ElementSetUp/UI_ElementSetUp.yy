@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"UI_ElementSetUp",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"UI_ElementSetUp",
+  "parent":{
+    "name":"UI_ELements",
+    "path":"folders/Scripts/UI_ELements.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

@@ -1,0 +1,1 @@
+scrollRateFollow = SimpleLerp(scrollRateFollow, scrollRate, 4, 0.0001);
