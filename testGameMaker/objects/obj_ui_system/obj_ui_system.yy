@@ -8,8 +8,8 @@
   "name":"obj_ui_system",
   "overriddenProperties":[],
   "parent":{
-    "name":"오브젝트",
-    "path":"folders/오브젝트.yy",
+    "name":"MANAGER",
+    "path":"folders/오브젝트/MANAGER.yy",
   },
   "parentObjectId":null,
   "persistent":false,

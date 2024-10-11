@@ -7,7 +7,6 @@ if(other.id == invokePlayer.id) return ;
 if(other.IsDead()) return ;
 else other.Dead();
 
-other.sprite_index = spr_sSlime_Crouch;
 
 alarm[0] = 10 * room_speed;
 

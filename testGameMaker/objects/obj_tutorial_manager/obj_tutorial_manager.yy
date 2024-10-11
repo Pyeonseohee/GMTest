@@ -9,8 +9,8 @@
   "name":"obj_tutorial_manager",
   "overriddenProperties":[],
   "parent":{
-    "name":"오브젝트",
-    "path":"folders/오브젝트.yy",
+    "name":"MANAGER",
+    "path":"folders/오브젝트/MANAGER.yy",
   },
   "parentObjectId":null,
   "persistent":false,

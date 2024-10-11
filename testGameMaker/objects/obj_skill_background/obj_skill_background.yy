@@ -1,11 +1,11 @@
 {
   "$GMObject":"",
-  "%Name":"obj_test_background",
+  "%Name":"obj_skill_background",
   "eventList":[
     {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":0,"eventType":0,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
   ],
   "managed":true,
-  "name":"obj_test_background",
+  "name":"obj_skill_background",
   "overriddenProperties":[],
   "parent":{
     "name":"UI",

@@ -46,7 +46,7 @@ with(AddButton(wid - 250, hei - 75, 500, 150))
 	}
 	
 	SetButtonCallback(self, CALLBACK{
-		room_goto(InGameRoom);
+		room_goto(MainMenu);
 	});
 }
 
@@ -67,3 +67,13 @@ with(AddButton(wid - 250, hei + 75 + 20, 500, 150))
 		room_goto(TutorialRoom);
 	});
 }
+
+//CO_SCOPE = id;
+//var _co = CO_BEGIN
+//	DELAY 50 THEN
+//	show_message(11);
+//	DELAY 50 THEN
+//	show_message(11);
+//	DELAY 50 THEN
+//	show_message(11);
+//CO_END

@@ -8,6 +8,11 @@ _score = 0;
 
 var name = "";
 
+user_skill = {
+	skill1: SKILL.ARROW,
+	skill2: SKILL.SWORD,
+	skill3: SKILL.VOLLEYBALL
+};
 gravity_strength = 0.5; // 중력 세기
 vspeed = 0; // 수직 속도
 
@@ -20,8 +25,17 @@ skill2 = NULL;
 skill3 = NULL;
 #endregion
 
+
 InitUserInput();
 InitUserMove();
+InitSkill();
+
+function SetSkill(_skill)
+{
+	user_skill.skill1 = _skill.skill1;
+	user_skill.skill2 = _skill.skill2;
+	user_skill.skill3 = _skill.skill3;
+}
 
 function WinRound()
 {
@@ -59,14 +73,14 @@ function GetName()
 #endregion
 
 #region ABOUT_INPUT
-function MatchKey(_left, _right, _jump, _skill1, _skill2, _skill3)
+function MatchKey(stu_keyMap)
 {
-	leftKey = _left;
-	rightKey = _right;
-	jumpKey = _jump;
-	skill1 = _skill1;
-	skill2 = _skill2;
-	skill3 = _skill3;
+	leftKey = stu_keyMap.left;
+	rightKey = stu_keyMap.right;
+	jumpKey = stu_keyMap.jump;
+	skill1 = stu_keyMap.skill1;
+	skill2 = stu_keyMap.skill2;
+	skill3 = stu_keyMap.skill3;
 }
 
 function CheckUserInput()
@@ -129,17 +143,17 @@ function CheckUserInput()
 	
 	if(keyboard_check_pressed(skill1))
 	{
-		InvokeSkill(id, global.gameManager.GetTargetEnemy(self), SKILL.TELEPORT);
+		InvokeSkill(id, global.gameManager.GetTargetEnemy(self), user_skill.skill1);
 	}
 
 	if(keyboard_check_pressed(skill2))
 	{
-		InvokeSkill(id, global.gameManager.GetTargetEnemy(self), SKILL.ARROW);
+		InvokeSkill(id, global.gameManager.GetTargetEnemy(self), user_skill.skill2);
 	}
 
 	if(keyboard_check_pressed(skill3))
 	{
-		InvokeSkill(id, global.gameManager.GetTargetEnemy(self), SKILL.VOLLEYBALL);
+		InvokeSkill(id, global.gameManager.GetTargetEnemy(self), user_skill.skill3);
 	}
 }
 

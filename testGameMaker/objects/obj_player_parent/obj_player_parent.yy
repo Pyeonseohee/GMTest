@@ -12,8 +12,8 @@
   "name":"obj_player_parent",
   "overriddenProperties":[],
   "parent":{
-    "name":"오브젝트",
-    "path":"folders/오브젝트.yy",
+    "name":"INGAME",
+    "path":"folders/오브젝트/INGAME.yy",
   },
   "parentObjectId":null,
   "persistent":false,
