@@ -1,44 +1,18 @@
-var wid = display_get_gui_width()/2;
-var hei = display_get_gui_height()/2;
+var _wid = display_get_gui_width()/2;
+var _hei = display_get_gui_height()/2;
 
+var _button_width = 500;
+var _button_height = 150;
 
-//var button_instance_id = AddButton(wid, hei, 500, 200);
+var _margin = 50;
 
-with (AddElement(0, 0, 100, 100)) {
-	SetElementDrawer(self, DRAWER {
-		draw_frame_12rounded(_x1,_y1,_x2,_y2, _alpha, c_white, _xscale);
-	});
-}
-
-with (AddButton(200, 0, 100, 100)) {
-	SetElementDrawer(self, DRAWER {
-		draw_frame_12rounded(_x1,_y1,_x2,_y2, _alpha, c_blue, _xscale);
-	});
-	SetButtonCallback(self, CALLBACK {
-		show_message(1);
-	});
-}
-
-with(AddElement(300, 0, 200, 200)){
-	SetElementDrawer(self, DRAWER{
-		draw_frame_glow1(_x1, _y1, _x2, _y2, _alpha, c_aqua, _xscale);
-	});
-} 
-
-with(AddElement(500, 0, 200, 200)){
-	SetElementDrawer(self, DRAWER{
-		draw_frame_outlineRounded(_x1, _y1, _x2, _y2, _alpha, c_red, _xscale);
-	});
-}
-
-
-with(AddButton(wid - 250, hei - 75, 500, 150))
+with(AddButton(_wid - _button_width/2, _hei - _button_height/2, _button_width, _button_height))
 {
-	var selectButton = SetElementDrawer(self, DRAWER{
+	SetElementDrawer(self, DRAWER{
 		draw_frame_roundedEdgeOrange(_x1, _y1, _x2, _y2, _alpha, _xscale);
 	});
+	
 	UILIb_button_scaleAnimation(self);
-	//UILIb_roundedLineEdge(self);
 	
 	with (AddLabel(0, 0, 0, 0, "Game Start", self)) {
 		SetLabel(self, c_black, 2, 2, 1, 10, AL_CENTER); // 가운데 중앙정렬
@@ -50,13 +24,13 @@ with(AddButton(wid - 250, hei - 75, 500, 150))
 	});
 }
 
-with(AddButton(wid - 250, hei + 75 + 20, 500, 150))
+with(AddButton(_wid - _button_width/2, _hei + _button_height/2 + _margin, _button_width, _button_height))
 {
 	var selectButton = SetElementDrawer(self, DRAWER{
 		draw_frame_roundedEdgeOrange(_x1, _y1, _x2, _y2, _alpha, _xscale);
 	});
-	UILIb_button_scaleAnimation(self);
 	
+	UILIb_button_scaleAnimation(self);
 	
 	with (AddLabel(0, 0, 0, 0, "Tutorial", self)) {
 		SetLabel(self, c_black, 2, 2, 1, 10, AL_CENTER);

@@ -9,6 +9,8 @@ enum SKILL
 	ARROW = 2,
 	VOLLEYBALL = 3,
 	TELEPORT = 4,
+	DASH = 5,
+	BOMB = 6
 }
 
 function InitSkill()
