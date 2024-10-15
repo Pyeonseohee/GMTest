@@ -13,3 +13,5 @@ center_y = room_height/2;
 offset = 150;	
 
 CreateMap(map_type);
+AddPlayer(center_x/2 + offset, 100, player1KeyMap, "P1");
+AddPlayer(room_width - center_x/2 - offset, 100, player2KeyMap, "P2", c_yellow);

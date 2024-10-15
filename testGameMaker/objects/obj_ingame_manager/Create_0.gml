@@ -2,8 +2,8 @@
 // You can write your code in this editor
 
 global.gameManager = self;
-
-playerCount = 0;
+application_surface_enable(false);
+global.playerCount = 0;
 maxRound = 3;
 maxScore = 2;
 current_round = 0;
@@ -11,8 +11,9 @@ current_round = 0;
 is_round_end = false;
 is_match_end = false;
 
-playerArray = [];
+global.playerArray = [];
 groundArray = [];
+groundCount = 0;
 
 
 player1KeyMap = {
@@ -60,9 +61,7 @@ function RoundStart()
 }
 
 function CreateMap(_mapType)
-{
-	groundArray = [];
-	
+{	
 	switch(_mapType)
 	{
 		case 0:
@@ -72,14 +71,26 @@ function CreateMap(_mapType)
 			AddPlayer(center_x, 100, player2KeyMap, "P2", c_yellow);
 			break;
 		case 1:
-			groundArray[0] = instance_create_layer(center_x/2 + offset, center_y, "Environments", obj_tile,
+			groundArray[0] = instance_create_layer(0, 0, "Environments", obj_tile,
 			{image_xscale: 3, image_yscale: 3});
-		
-			groundArray[1] = instance_create_layer(room_width - center_x/2 - offset, center_y, "Environments", obj_tile,
+			groundArray[0].SetInitPos(0);
+			groundCount++;
+			
+			
+			groundArray[1] = instance_create_layer(0, 0, "Environments", obj_tile,
 			{image_xscale: 3, image_yscale: 3});
+			groundArray[1].SetInitPos(pi/2);
+			groundCount++;
+			
+			groundArray[2] = instance_create_layer(0, 0, "Environments", obj_tile,
+			{image_xscale: 3, image_yscale: 3});
+			groundArray[2].SetInitPos(pi);
+			groundCount++;
 		
-			AddPlayer(center_x/2 + offset, 100, player1KeyMap, "P1");
-			AddPlayer(room_width - center_x/2 - offset, 100, player2KeyMap, "P2", c_yellow);
+			groundArray[3] = instance_create_layer(0, 0,  "Environments", obj_tile,
+			{image_xscale: 3, image_yscale: 3});
+			groundArray[3].SetInitPos(3*pi/2);
+			groundCount++;
 			break;
 		case 2:
 			break;
@@ -88,15 +99,27 @@ function CreateMap(_mapType)
 
 function AddPlayer(_x, _y, stu_keyMap, _name, _color = c_white)
 {
-	playerArray[playerCount] = instance_create_layer(_x, _y, DEFAULT_LAYER, obj_player_parent,
+	for(var i = 0; i < groundCount; i++)
 	{
-		image_xscale: 2,
-		image_yscale: 2,
-		image_blend: _color,
-	});
-	playerArray[playerCount].MatchKey(stu_keyMap);
-	playerArray[playerCount].SetName(_name);
-	playerCount++;
+		var _ground = groundArray[i];
+		var _hei = _ground.sprite_height/2;
+		if(_ground.y - _hei * 3 > 0)
+		{
+			var offset = 10;
+			var test_x = _ground.x;
+			var test_y = _ground.y - _hei * 3 - offset;
+			global.playerArray[global.playerCount] = instance_create_layer(test_x, test_y, DEFAULT_LAYER, obj_player_parent,
+			{
+				image_xscale: 2,
+				image_yscale: 2,
+				image_blend: _color,
+			});
+			global.playerArray[global.playerCount].MatchKey(stu_keyMap);
+			global.playerArray[global.playerCount].SetName(_name);
+			global.playerCount++;
+			break;
+		}	
+	}
 }
 
 function CheckRoundEnd()
@@ -104,11 +127,11 @@ function CheckRoundEnd()
 	var aliveCount = 0;
 	var alivePlayer = [];
 	
-	for(var i = 0; i < playerCount; i++)
+	for(var i = 0; i < global.playerCount; i++)
 	{
-		if(!playerArray[i].IsDead())
+		if(!global.playerArray[i].IsDead())
 		{
-			alivePlayer[aliveCount] = playerArray[i];
+			alivePlayer[aliveCount] = global.playerArray[i];
 			aliveCount++;
 		}
 	}
@@ -131,11 +154,11 @@ function CheckRoundEnd()
 
 function GetTargetEnemy(_instance)
 {
-	for(var i = 0; i < playerCount; i++)
+	for(var i = 0; i < global.playerCount; i++)
 	{
-		if(playerArray[i].id != _instance.id)
+		if(global.playerArray[i].id != _instance.id)
 		{
-			return playerArray[i];
+			return global.playerArray[i];
 		}
 	}
 }
