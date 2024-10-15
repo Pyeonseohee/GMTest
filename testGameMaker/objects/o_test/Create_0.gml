@@ -3,31 +3,21 @@ var hei = display_get_gui_height()/2;
 
 
 //var button_instance_id = AddButton(wid, hei, 500, 200);
-
-with (AddElement(0, 0, 100, 100)) {
-	SetElementDrawer(self, DRAWER {
-		draw_frame_12rounded(_x1,_y1,_x2,_y2, _alpha, c_white, _xscale);
-	});
-}
-
-with (AddButton(200, 0, 100, 100)) {
-	SetElementDrawer(self, DRAWER {
-		draw_frame_12rounded(_x1,_y1,_x2,_y2, _alpha, c_blue, _xscale);
-	});
-	SetButtonCallback(self, CALLBACK {
-		show_message(1);
-	});
-}
-
-with(AddElement(300, 0, 200, 200)){
+with(AddButton(200, 200, 200, 200))
+{
 	SetElementDrawer(self, DRAWER{
-		draw_frame_glow1(_x1, _y1, _x2, _y2, _alpha, c_aqua, _xscale);
+		// 스킬 쿨타임 있을 때
+		draw_sprite_pie_reverse(sp_circle_line_256_256, 0, (_x1+_x2)/2, (_y1+_y2)/2, 0, 270, c_white, _alpha, _xscale * 2, _yscale * 2)
 	});
-} 
-
-with(AddElement(500, 0, 200, 200)){
-	SetElementDrawer(self, DRAWER{
-		draw_frame_outlineRounded(_x1, _y1, _x2, _y2, _alpha, c_red, _xscale);
+	with(AddElement(0, 0, 150, 150, self))
+	{
+		SetElementAlignment(self, AL_CENTER);
+		SetElementDrawer(self, DRAWER{
+			draw_sprite_ext(sp_icon_star_02, 0, (_x1+_x2)/2, (_y1+_y2)/2, _xscale * 2, _yscale * 2, 0, c_white, _alpha);
+		});
+	}
+	
+	SetButtonCallback(self, CALLBACK{
 	});
 }
 

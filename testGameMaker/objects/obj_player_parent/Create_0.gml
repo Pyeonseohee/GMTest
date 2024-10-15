@@ -1,34 +1,46 @@
 /// @description Insert description here
 // You can write your code in this editor
-
-show_debug_message("-------------Create!!!!!!");
-
-is_dead = false;
-_score = 0;
-
 var name = "";
-
-user_skill = {
-	skill1: SKILL.ARROW,
-	skill2: SKILL.SWORD,
-	skill3: SKILL.VOLLEYBALL
-};
+is_dead = false;
+win_score = 0;
 gravity_strength = 0.5; // 중력 세기
 vspeed = 0; // 수직 속도
+infected = false;
 
-#region 키 매칭
-leftKey = NULL;
-rightKey = NULL;
-jumpKey = NULL;
-skill1 = NULL;
-skill2 = NULL;
-skill3 = NULL;
+#region 셰이더
+
+_uniColor = shader_get_uniform(BombEffect, "u_colour");
+_color = [1.0, 1.0, 0.0, 1.0];
+
+_uniUV = shader_get_uniform(BombEffect, "u_uv");
+_uniTime = shader_get_uniform(BombEffect, "u_time");
+_uniSpeed = shader_get_uniform(BombEffect, "u_speed");
+_uniSection = shader_get_uniform(BombEffect, "u_section");
+_uniSaturation = shader_get_uniform(BombEffect, "u_saturation");
+_uniBrightness = shader_get_uniform(BombEffect, "u_brightness");
+_uniMix = shader_get_uniform(BombEffect, "u_mix");
+
+_time = 0;
+_speed = 1.0;
+_section = 0.5;
+_saturation = 0.7;
+_brightness = 0.8;
+timer_duration = 10;
+_mix = 0.5;
 #endregion
 
-
+#region 유저 오브제 Init
 InitUserInput();
 InitUserMove();
 InitSkill();
+#endregion
+
+#region 스킬 관련
+user_skill = {
+	skill1: SKILL.SWORD,
+	skill2: SKILL.DASH,
+	skill3: SKILL.BOMB
+};
 
 function SetSkill(_skill)
 {
@@ -37,9 +49,44 @@ function SetSkill(_skill)
 	user_skill.skill3 = _skill.skill3;
 }
 
+function ReceiveBomb()
+{
+	infected = true;
+	_time = 0;
+}
+
+function RemoveBomb()
+{
+	infected = false;
+	_time = 0;
+}
+
+function SparkTheBomb()
+{
+	Dead();
+}
+
+function DrawBombEffectShader()
+{
+	shader_set(BombEffect);
+	var uv = sprite_get_uvs(sprite_index, image_index);
+	
+	shader_set_uniform_f(_uniUV, uv[0], uv[2]);
+	shader_set_uniform_f(_uniSpeed, _speed);
+	shader_set_uniform_f(_uniTime, _time);
+	shader_set_uniform_f(_uniSection, _section);
+	shader_set_uniform_f(_uniSaturation, _saturation);
+	shader_set_uniform_f(_uniBrightness, _brightness);
+	shader_set_uniform_f(_uniMix, _mix);
+	
+	draw_self();
+	shader_reset();
+}
+#endregion
+
 function WinRound()
 {
-	_score++;
+	win_score++;
 }
 
 function SetName(_name)
@@ -57,7 +104,7 @@ function Dead()
 #region GET
 function GetScore( )
 {
-	return _score;
+	return win_score;
 }
 
 function IsDead()
@@ -72,7 +119,14 @@ function GetName()
 
 #endregion
 
-#region ABOUT_INPUT
+#region ABOUT 키 매칭
+leftKey = NULL;
+rightKey = NULL;
+jumpKey = NULL;
+skill1 = NULL;
+skill2 = NULL;
+skill3 = NULL;
+
 function MatchKey(stu_keyMap)
 {
 	leftKey = stu_keyMap.left;
@@ -82,7 +136,9 @@ function MatchKey(stu_keyMap)
 	skill2 = stu_keyMap.skill2;
 	skill3 = stu_keyMap.skill3;
 }
+#endregion
 
+#region About 키 입력 체크
 function CheckUserInput()
 {
 	if(keyboard_check_pressed(leftKey))
@@ -159,9 +215,40 @@ function CheckUserInput()
 
 #endregion
 
-#region SKILL
-
-
+#region About 이동
+function ExecutekUserMove()
+{
+	if(GetIsOnGround()) // 땅에 있을 때
+	{
+		vspeed = 0;
+		if(GetInputLeft())
+		{
+			MoveLandAlongEdge(-1);
+		}
+		else if(GetInputRight())
+		{
+			MoveLandAlongEdge(1);
+		}
+		else
+		{
+			MoveLandAlongEdge(0);
+		}
+	}
+	else // 공중에 있을 때
+	{
+		 vspeed += gravity_strength; // 중력에 따른 속도 증가
+		 y += vspeed;
+	 
+		if(GetInputLeft())
+		{
+			MoveHorizontal(-1);
+		}
+		else if(GetInputRight())
+		{
+			MoveHorizontal(1);
+		}
+	}
+}
 #endregion
 
 

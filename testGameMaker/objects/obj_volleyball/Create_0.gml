@@ -14,3 +14,6 @@ function SetCollisionTile(_obj)
 {
 	collision_tile = _obj
 }
+
+trajectory = []; // 궤적을 저장할 배열
+trail_length = 50; // 궤적의 길이
