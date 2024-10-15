@@ -11,6 +11,9 @@ var UI_center_y = display_get_gui_height()/2;
 topBarHeight = 300;
 footBarHeight = 400;
 
+skillSlotFuncs = [
+
+];
 global.stu_player_skills = [];
 clicked_slot = NULL;
 
@@ -35,6 +38,11 @@ global.spr_skill =
 	dash: sp_icon_shoes_01,
 	
 };
+#endregion
+
+#region UI element
+skillExplainLabel = NULL;
+
 #endregion
 
 #region About TopBar
@@ -99,12 +107,16 @@ var _margin = 50;
 var _skillSlotSize = 200;
 var _slotCount = 3;
 
-function AddSkillSlotLeft(_x, _y)
+
+
+function AddSkillSlot1(_x, _y)
 {
 	var _margin = 50;
 	var skillIconSize = 200;
-	with(AddButton(_x + 50, display_get_gui_height()/2 - skillIconSize/2, skillIconSize, skillIconSize))
+	with(AddButton(_x + 50, (display_get_gui_height()/2 - skillIconSize/2) + skillIconSize*(1 - 2) - _margin, skillIconSize, skillIconSize))
 	{
+		SetElementVariables(self, {_skill: global.stu_p1_skill.skill1});
+		
 		SetElementDrawer(self, DRAWER{
 			switch(_skill)
 			{
@@ -135,20 +147,121 @@ function AddSkillSlotLeft(_x, _y)
 			}
 		});
 	
+		UILIb_button_scaleAnimation(self); // 애니메이션
+	
+		SetButtonCallback(self, CALLBACK{
+			_skill = !_skill;
+			clicked_player = PLAYER1;
+			obj_ui_system.clicked_slot = 1;
+		});
+	}
+}
+
+function AddSkillSlot2(_x, _y)
+{
+	var _margin = 50;
+	var skillIconSize = 200;
+	with(AddButton(_x + 50, (display_get_gui_height()/2 - skillIconSize/2), skillIconSize, skillIconSize))
+	{
 		SetElementVariables(self, {_skill: global.stu_p1_skill.skill2});
+		
+		SetElementDrawer(self, DRAWER{
+			switch(_skill)
+			{
+				case SKILL.ARROW:
+					draw_frame_roundedGlow(_x1, _y1, _x2, _y2, _alpha,  c_yellow, _xscale);
+					draw_frame_12rounded(_x1, _y1, _x2, _y2, _alpha, c_dkgray, _xscale);
+					draw_sprite_ext(global.spr_skill.arrow, 0, (_x1+_x2)/2, (_y1+_y2)/2, _xscale, _yscale, 0, c_white, _alpha);
+					break;
+				case SKILL.VOLLEYBALL:
+					draw_frame_roundedGlow(_x1, _y1, _x2, _y2, _alpha,  c_yellow, _xscale);
+					draw_frame_12rounded(_x1, _y1, _x2, _y2, _alpha, c_dkgray, _xscale);
+					draw_sprite_ext(global.spr_skill.volleyball, 0, (_x1+_x2)/2, (_y1+_y2)/2, _xscale, _yscale, 0, c_white, _alpha);
+					break;
+				case SKILL.TELEPORT:
+					draw_frame_roundedGlow(_x1, _y1, _x2, _y2, _alpha,  c_yellow, _xscale);
+					draw_frame_12rounded(_x1, _y1, _x2, _y2, _alpha, c_dkgray, _xscale);
+					draw_sprite_ext(global.spr_skill.arrow, 0, (_x1+_x2)/2, (_y1+_y2)/2, _xscale, _yscale, 0, c_white, _alpha);
+					break;
+				case SKILL.SWORD:
+					draw_frame_roundedGlow(_x1, _y1, _x2, _y2, _alpha,  c_yellow, _xscale);
+					draw_frame_12rounded(_x1, _y1, _x2, _y2, _alpha, c_dkgray, _xscale);
+					draw_sprite_ext(global.spr_skill.teleport, 0, (_x1+_x2)/2, (_y1+_y2)/2, _xscale, _yscale, 0, c_white, _alpha);
+					break;
+				default:
+					draw_frame_roundedGlow(_x1, _y1, _x2, _y2, _alpha,  c_yellow, _xscale);
+					draw_frame_12rounded(_x1, _y1, _x2, _y2, _alpha, c_dkgray, _xscale);
+					break;
+			}
+		});
 	
 		UILIb_button_scaleAnimation(self); // 애니메이션
 	
 		SetButtonCallback(self, CALLBACK{
 			_skill = !_skill;
 			clicked_player = PLAYER1;
-			clicked_slot = 0;
+			obj_ui_system.clicked_slot = 2;
+		});
+	}
+}
+
+function AddSkillSlot3(_x, _y)
+{
+	var _margin = 50;
+	var skillIconSize = 200;
+	with(AddButton(_x + 50, (display_get_gui_height()/2 - skillIconSize/2) + skillIconSize*(3 - 2) + _margin, skillIconSize, skillIconSize))
+	{
+		SetElementVariables(self, {_skill: global.stu_p1_skill.skill3});
+		
+		SetElementDrawer(self, DRAWER{
+			switch(_skill)
+			{
+				case SKILL.ARROW:
+					draw_frame_roundedGlow(_x1, _y1, _x2, _y2, _alpha,  c_yellow, _xscale);
+					draw_frame_12rounded(_x1, _y1, _x2, _y2, _alpha, c_dkgray, _xscale);
+					draw_sprite_ext(global.spr_skill.arrow, 0, (_x1+_x2)/2, (_y1+_y2)/2, _xscale, _yscale, 0, c_white, _alpha);
+					break;
+				case SKILL.VOLLEYBALL:
+					draw_frame_roundedGlow(_x1, _y1, _x2, _y2, _alpha,  c_yellow, _xscale);
+					draw_frame_12rounded(_x1, _y1, _x2, _y2, _alpha, c_dkgray, _xscale);
+					draw_sprite_ext(global.spr_skill.volleyball, 0, (_x1+_x2)/2, (_y1+_y2)/2, _xscale, _yscale, 0, c_white, _alpha);
+					break;
+				case SKILL.TELEPORT:
+					draw_frame_roundedGlow(_x1, _y1, _x2, _y2, _alpha,  c_yellow, _xscale);
+					draw_frame_12rounded(_x1, _y1, _x2, _y2, _alpha, c_dkgray, _xscale);
+					draw_sprite_ext(global.spr_skill.arrow, 0, (_x1+_x2)/2, (_y1+_y2)/2, _xscale, _yscale, 0, c_white, _alpha);
+					break;
+				case SKILL.SWORD:
+					draw_frame_roundedGlow(_x1, _y1, _x2, _y2, _alpha,  c_yellow, _xscale);
+					draw_frame_12rounded(_x1, _y1, _x2, _y2, _alpha, c_dkgray, _xscale);
+					draw_sprite_ext(global.spr_skill.teleport, 0, (_x1+_x2)/2, (_y1+_y2)/2, _xscale, _yscale, 0, c_white, _alpha);
+					break;
+				default:
+					draw_frame_roundedGlow(_x1, _y1, _x2, _y2, _alpha,  c_yellow, _xscale);
+					draw_frame_12rounded(_x1, _y1, _x2, _y2, _alpha, c_dkgray, _xscale);
+					break;
+			}
+		});
+	
+		UILIb_button_scaleAnimation(self); // 애니메이션
+	
+		SetButtonCallback(self, CALLBACK{
+			_skill = !_skill;
+			clicked_player = PLAYER1;
+			obj_ui_system.clicked_slot = 3;
 		});
 	}
 }
 
 function AddSkillSlotRight(_x, _y)
 {
+}
+
+function AddSkillSlotLeft(_x, _y)
+{
+	AddSkillSlot1(_x, _y);
+	AddSkillSlot2(_x, _y);
+	AddSkillSlot3(_x, _y);
 }
 function AddSideBar()
 {
@@ -157,15 +270,12 @@ function AddSideBar()
 	{
 		obj_ui_system.AddSkillSlotLeft(x, y);
 	}
-	
 	// 오른쪽 스킬 창
 	with(AddButton(display_get_gui_width() - 300, topBarHeight, 300, display_get_gui_height() - topBarHeight - footBarHeight))
 	{
 		obj_ui_system.AddSkillSlotRight(x, y);
 	}
 }
-
-
 #endregion
 
 #region About FootBar
@@ -174,31 +284,24 @@ function AddFootBar()
 	with(AddButton(0, display_get_gui_height() - footBarHeight, display_get_gui_width(), footBarHeight))
 	{
 		SetElementDrawer(self, DRAWER{
-			//draw_set_alpha(1);
-			//draw_set_color(c_white);
-			//draw_rectangle(_x1, _y1, _x2, _y2, false);
-			draw_sprite_ext(sp_square_16_16, 0, (_x1+_x2)/2, (_y1+_y2)/2, (_x2-_x1) / 16, (_y2-_y1) / 16, 0, c_gray, _alpha);
+			draw_set_alpha(0.7);
+			draw_set_color(c_black);
+			draw_rectangle(_x1, _y1, _x2, _y2, false);
+			//draw_sprite_ext(sp_square_16_16, 0, (_x1+_x2)/2, (_y1+_y2)/2, (_x2-_x1) / 16, (_y2-_y1) / 16, 0, c_gray, _alpha);
 		});
 		
 		var _skillButtonSize = 200;
-		//with(AddButton(x, y , _skillButtonSize, _skillButtonSize))
-		//{
-		//	SetElementDrawer(self, DRAWER{
-		//		draw_frame_roundedGlow(_x1, _y1, _x2, _y2, 0.5, c_silver, _xscale);
-		//		draw_sprite_ext(sp_icon_pin_01, 0, (_x1+_x2)/2, (_y1+_y2)/2, 2 * _xscale, 2 * _yscale, 0, c_white, _alpha);
-		//	});
-		//		// 클릭하면 스킬 변경
-		//	SetButtonCallback(self, CALLBACK{
-		//		show_message("화살 클릭??");
-					
-		//	});
-		//	// 호버인듯
-		//	SetButtonFocusCallback(self,CALLBACK{
-		//		show_message("플레이어가 바라보는 방향으로 직선 궤도로 나아가는 화살을 발사합니다." );  
-		//	});
-		//}
+		
+		var _skillExplainLabel = AddLabel(0, 0, 0, 0, "", self);
+		obj_ui_system.skillExplainLabel = _skillExplainLabel;
+		with(_skillExplainLabel)
+		{
+			SetLabel(self, c_white, 1, 1, 1, 1, AL_LEFTDOWN, global.FontDefault, false);
+			SetElementFit(self, FIT_FULL);
+		}
 	}
 }
+
 #endregion
 
 #region About player sprtie
@@ -235,12 +338,7 @@ AddPlayerSprite();
 #endregion
 
 
-
-
-
-
 #region 스킬 창 고르는 footbar
-
 
 // 스킬 나타낼 창 구현
 var skillBackObj = instance_create_layer(0, 0, DEFAULT_LAYER, obj_skill_background, 
@@ -261,91 +359,12 @@ var center_of_skill_background_in_UI = center_of_skill_background_in_room * scal
 // method 찾아보기 method(self, Enter());
 show_message("Enter!!");
 
-for(var i = 0; i < SKILL_COUNT; i++)
+for(var i = 1; i < SKILL_COUNT; i++)
 {
 	with(AddButton(200*(i+1)+ skillButtonSize*i , center_of_skill_background_in_UI - skillButtonSize/2, skillButtonSize, skillButtonSize))
 	{
 		UILIb_button_scaleAnimation(self); // 애니메이션
-		switch(i)
-		{
-			case SKILL.ARROW:
-				SetElementDrawer(self, DRAWER{
-					draw_frame_roundedGlow(_x1, _y1, _x2, _y2, 0.5, c_silver, _xscale);
-					draw_sprite_ext(sp_icon_pin_01, 0, (_x1+_x2)/2, (_y1+_y2)/2, 2 * _xscale, 2 * _yscale, 0, c_white, _alpha);
-				});
-				
-					// 클릭하면 스킬 변경
-				SetButtonCallback(self, CALLBACK{
-					show_message("화살 클릭??");
-					
-				});
-				// 호버인듯
-				SetButtonFocusCallback(self,CALLBACK{
-					show_message("플레이어가 바라보는 방향으로 직선 궤도로 나아가는 화살을 발사합니다." );  
-				});
-				break;
-			case SKILL.SWORD:
-				SetElementDrawer(self, DRAWER{
-					draw_frame_roundedGlow(_x1, _y1, _x2, _y2, 0.5, c_silver, _xscale);
-					draw_sprite_ext(sp_icon_sword_01, 0, (_x1+_x2)/2, (_y1+_y2)/2, 2 * _xscale, 2 * _yscale, 0, c_white, _alpha);
-				});
-			
-					// 클릭하면 스킬 변경
-				SetButtonCallback(self, CALLBACK{
-					show_message("검 클릭??");  
-				});
-				// 호버인듯
-				SetButtonFocusCallback(self,CALLBACK{
-					show_message("땅에 붙어있는 상태에서 원의 반대편에 검을 꽂을 수 있습니다." );  
-				});
-				break;
-			case SKILL.TELEPORT:
-				SetElementDrawer(self, DRAWER{
-					draw_frame_roundedGlow(_x1, _y1, _x2, _y2, 0.5, c_silver, _xscale);
-					draw_sprite_ext(sp_icon_person_01, 0, (_x1+_x2)/2, (_y1+_y2)/2, 2*_xscale, 2*_yscale, 0, c_white, _alpha);
-				});
-			
-					// 클릭하면 스킬 변경
-				SetButtonCallback(self, CALLBACK{
-					show_message("텔레포트! 클릭??");  
-				});
-				// 호버인듯
-				SetButtonFocusCallback(self,CALLBACK{
-					show_message("땅에 붙어있는 상태에서 원의 반대편으로 이동할 수 있습니다." ); 
-					
-				});
-				break;
-			case SKILL.VOLLEYBALL:
-				SetElementDrawer(self, DRAWER{
-					draw_frame_roundedGlow(_x1, _y1, _x2, _y2, 0.5, c_silver, _xscale);
-					draw_sprite_ext(sp_icon_ball_01, 0, (_x1+_x2)/2, (_y1+_y2)/2, 2*_xscale, 2*_yscale, 0, c_white, _alpha);
-				});
-			
-					// 클릭하면 스킬 변경
-				SetButtonCallback(self, CALLBACK{
-					show_message("배구공 클릭??");  
-				});
-				// 호버인듯
-				SetButtonFocusCallback(self,CALLBACK{
-					show_message("땅에 붙어있는 상태에서 그 땅에 배구공을 굴려 적을 공격합니다.\n단, 자신은 죽지 않습니다." );  
-				});
-				break;
-			case SKILL.RECREATE:
-				SetElementDrawer(self, DRAWER{
-					draw_frame_roundedGlow(_x1, _y1, _x2, _y2, 0.5, c_silver, _xscale);
-					draw_sprite_ext(sp_icon_star_02, 0, (_x1+_x2)/2, (_y1+_y2)/2, 2*_xscale, 2*_yscale, 0, c_white, _alpha);
-				});
-			
-				// 클릭하면 스킬 변경
-				SetButtonCallback(self, CALLBACK{
-					show_message("부활 클릭??");  
-				});
-				// 호버인듯
-				SetButtonFocusCallback(self,CALLBACK{
-					show_message("라운드에서 단 한 번 다시 부활할 수 있습니다." );  
-				});
-				break;
-		}
+		global.showSkillList[i](self, SKILL.ARROW);
 		
 	}
 }
