@@ -1,14 +1,13 @@
 /// @description Insert description here
 // You can write your code in this editor
-var name = "";
+name = "";
+playerIndex = NULL;
 is_dead = false;
-win_score = 0;
 gravity_strength = 0.5; // 중력 세기
 vspeed = 0; // 수직 속도
 infected = false;
 
 #region 셰이더
-
 _uniColor = shader_get_uniform(BombEffect, "u_colour");
 _color = [1.0, 1.0, 0.0, 1.0];
 
@@ -37,10 +36,35 @@ InitSkill();
 
 #region 스킬 관련
 user_skill_list = [];
+skillCoolTimeArray=
+[
+	0,
+	0,
+	0
+];
 
 function InitSkill(_skillList)
 {
 	user_skill_list = _skillList;
+}
+
+function GetLeftSkillCoolTime(_slotNum)
+{
+	return skillCoolTimeArray[_slotNum];
+}
+function DecreaseLeftSkillCoolTime(_slotNum, _val)
+{
+	skillCoolTimeArray[_slotNum] -= _val;
+}
+
+function ResetLeftSkillCoolTime(_slotNum, _skill)
+{
+	skillCoolTimeArray[_slotNum] = obj_ingame_manager.GetSkillCoolTime(_skill);
+}
+
+function GetLeftAllSkillCoolTime()
+{
+	return skillCoolTimeArray;
 }
 
 function ReceiveBomb()
@@ -78,10 +102,11 @@ function DrawBombEffectShader()
 }
 #endregion
 
-function WinRound()
+function SetIndex(_idx)
 {
-	win_score++;
+	playerIdx = _idx;
 }
+
 
 function SetName(_name)
 {
@@ -91,12 +116,11 @@ function SetName(_name)
 function Dead()
 {
 	is_dead = true;
-	show_message("죽었다!!!");
 	sprite_index = spr_sSlime_Crouch;
 	global.gameManager.CheckRoundEnd();
 }
 #region GET
-function GetScore( )
+function GetScore()
 {
 	return win_score;
 }
@@ -104,6 +128,11 @@ function GetScore( )
 function IsDead()
 {
 	return is_dead;
+}
+
+function GetIndex()
+{
+	return playerIdx;
 }
 
 function GetName()
@@ -140,79 +169,61 @@ function CheckUserInput()
 	if(keyboard_check_pressed(leftKey))
 	{
 		if(keyboard_check(rightKey) || keyboard_check_pressed(rightKey))
-		{
 			NoneHorizontalKey();
-		}
 		else
-		{
 			DownLeftKey();
-		}
 	}
 
 	if(keyboard_check_pressed(rightKey))
 	{
 		if(keyboard_check(leftKey) || keyboard_check_pressed(leftKey))
-		{
 			NoneHorizontalKey();
-		}
 		else
-		{
 			DownRightKey();
-		}
 	}
 
 	if(keyboard_check_released(leftKey))
 	{
 		if(keyboard_check(rightKey) || keyboard_check_pressed(rightKey))
-		{
 			DownRightKey();
-		}
 		else
-		{
 			NoneHorizontalKey();
-		}
 	}
 
 	if(keyboard_check_released(rightKey))
 	{
 		if(keyboard_check(leftKey) || keyboard_check_pressed(leftKey))
-		{
 			DownLeftKey();
-		}
 		else
-		{
 			NoneHorizontalKey();
-		}
 	}
 
 	if(keyboard_check_pressed(jumpKey))
 	{
-		if(can_jump)
-		{
-			Jump();
-		}
+		if(can_jump) Jump();
 	}
 	
 	if(keyboard_check_pressed(dropKey))
 	{
-		if(can_drop)
-		{
-			Drop();
-		}
+		if(can_drop) Drop();
 	}
 	
-	if(keyboard_check_pressed(skill1))
+	if(keyboard_check_pressed(skill1) && GetLeftSkillCoolTime(0) == 0)
 	{
+		show_message("스킬 1!!!!");
+		ResetLeftSkillCoolTime(0, user_skill_list[0]);
 		InvokeSkill(id, global.gameManager.GetTargetEnemy(self), user_skill_list[0]);
 	}
 
-	if(keyboard_check_pressed(skill2))
+	if(keyboard_check_pressed(skill2) && GetLeftSkillCoolTime(1) == 0)
 	{
+		ResetLeftSkillCoolTime(1, user_skill_list[1]);
 		InvokeSkill(id, global.gameManager.GetTargetEnemy(self), user_skill_list[1]);
 	}
 
-	if(keyboard_check_pressed(skill3))
+	if(keyboard_check_pressed(skill3) && GetLeftSkillCoolTime(2) == 0)
 	{
+		ResetLeftSkillCoolTime(2, user_skill_list[2]);
 		InvokeSkill(id, global.gameManager.GetTargetEnemy(self), user_skill_list[2]);
 	}
 }
@@ -255,4 +266,17 @@ function ExecutekUserMove()
 }
 #endregion
 
+#region 스킬 쿨타임
 
+function CheckSkillCoolTime()
+{
+	var _decreaseValue = 1;
+	for(var _i = 0; _i < 3; _i++)
+	{
+		if(GetLeftSkillCoolTime(_i) > 0)
+		{
+			DecreaseLeftSkillCoolTime(_i, _decreaseValue/room_speed);
+		}
+	}
+}
+#endregion

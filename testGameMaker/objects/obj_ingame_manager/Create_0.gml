@@ -1,23 +1,18 @@
 /// @description Insert description here
 // You can write your code in this editor
-
-global.gameManager = self;
 application_surface_enable(false);
-global.playerCount = 0;
-maxRound = 3;
-maxScore = 2;
-current_round = 0;
-
-is_round_end = false;
-is_match_end = false;
-
+global.gameManager = self;
 global.playerArray = [];
+
+playerLeftCoolTimeArray = [];
+
+playerScore = [0, 0];
+playerCount = 2;
 groundArray = [];
 groundCount = 0;
 
-
+#region 키 맵핑 정의
 player1KeyMap = {
-	//ord("A"), ord("D"), ord("W"), ord("C"), ord("V"),  ord("B")
 	left: ord("A"),
 	right: ord("D"),
 	jump: ord("W"),
@@ -28,7 +23,6 @@ player1KeyMap = {
 }
 
 player2KeyMap = {
-	//vk_left, vk_right, vk_up, ord("I") , ord("O"), ord("P")
 	left: vk_left,
 	right: vk_right,
 	jump: vk_up,
@@ -37,15 +31,25 @@ player2KeyMap = {
 	skill2: ord("O"),
 	skill3: ord("P")
 }
+#endregion
+
+#region About 라운드
+current_round = 0;
+maxRound = 3;
+maxScore = 2;
+
+
+is_round_end = true;
+is_match_end = false;
 
 function IsGameEnd()
 {
-	return is_match_end;
+	return (is_round_end || is_match_end);
 }
 
 function GameEnd()
 {
-	RoundEnd();
+	is_round_end = true;
 	is_match_end = true;
 	
 	show_message("게임이 끝났습니다!!!!!");
@@ -54,13 +58,60 @@ function GameEnd()
 function RoundEnd()
 {
 	is_round_end = true;
-	show_message("1 라운드가 끝났습니다!!!!!");
+	for(var _i = 0; _i < playerCount; _i++)
+	{
+		instance_destroy(global.playerArray[_i]);
+	}
+	global.playerArray = [];
+	
+	CO_SCOPE = id;
+	var _co = CO_BEGIN
+	DELAY 3000 THEN
+	RoundStart();
+	CO_END
 }
 
 function RoundStart()
 {
+	CO_SCOPE = id;
+	var _co = CO_BEGIN
+	DELAY 3000 THEN
+	show_message("시작!");
 	is_round_end = false;
+	current_round++;
+	CO_END
+	AddPlayer(0, player1KeyMap, "P1");
+	AddPlayer(1, player2KeyMap, "P2", c_yellow);
 }
+
+function CheckRoundEnd()
+{
+	var aliveCount = 0;
+	var alivePlayer = [];
+	
+	for(var i = 0; i < playerCount; i++)
+	{
+		if(!global.playerArray[i].IsDead())
+		{
+			alivePlayer[aliveCount] = global.playerArray[i];
+			aliveCount++;
+		}
+	}
+	
+	if(aliveCount == 1)
+	{
+		var _player = alivePlayer[0];
+		playerScore[_player.GetIndex()]++;
+		if(playerScore[_player.GetIndex()] >= maxScore) // maxScore에 도달하면 게임이 끝납니다.
+		{
+			GameEnd();
+		}
+		else RoundEnd();
+	}
+}    
+
+#endregion
+
 
 function CreateMap(_mapType)
 {	
@@ -95,69 +146,72 @@ function CreateMap(_mapType)
 	}
 }
 
-function AddPlayer(stu_keyMap, _name, _color = c_white)
+function AddPlayer(_idx, stu_keyMap, _name, _color = c_white)
 {
-	for(var i = 0; i < groundCount; i++)
+	for(var _i = 0; _i < groundCount; _i++)
 	{
-		var _ground = groundArray[i];
+		var _ground = groundArray[_i];
 		var _hei = _ground.sprite_height/2;
 		if(_ground.y - _hei * 3 > 0)
 		{
 			var offset = 10;
 			var test_x = _ground.x;
 			var test_y = _ground.y - _hei * 3 - offset;
-			global.playerArray[global.playerCount] = instance_create_layer(test_x, test_y, DEFAULT_LAYER, obj_player_parent,
+			global.playerArray[_idx] = instance_create_layer(test_x, test_y, DEFAULT_LAYER, obj_player_parent,
 			{
 				image_xscale: 2,
 				image_yscale: 2,
 				image_blend: _color,
 			});
-			global.playerArray[global.playerCount].MatchKey(stu_keyMap);
-			global.playerArray[global.playerCount].SetName(_name);
-			global.playerArray[global.playerCount].InitSkill(global.all_skill[global.playerCount]);
-			global.playerCount++;
+			global.playerArray[_idx].MatchKey(stu_keyMap);
+			global.playerArray[_idx].SetIndex(_idx);
+			global.playerArray[_idx].SetName(_name);
+			global.playerArray[_idx].InitSkill(global.all_skill[_idx]);
 			break;
 		}	
 	}
 }
 
-function CheckRoundEnd()
+function GetTargetEnemy(_ins)
 {
-	var aliveCount = 0;
-	var alivePlayer = [];
-	
-	for(var i = 0; i < global.playerCount; i++)
+	for(var _i = 0; _i < playerCount; _i++)
 	{
-		if(!global.playerArray[i].IsDead())
+		if(global.playerArray[_i].id != _ins.id)
 		{
-			alivePlayer[aliveCount] = global.playerArray[i];
-			aliveCount++;
-		}
-	}
-	
-	if(aliveCount == 1)
-	{
-		
-		_player = alivePlayer[0];
-		
-		show_message(string(_player.GetName()) + "가 이겼습니다!!!");
-		
-		_player.WinRound();
-		if(_player.GetScore() >= maxScore) // maxScore에 도달하면 게임이 끝납니다.
-		{
-			GameEnd();
-		}
-		else RoundEnd();
-	}
-}    
-
-function GetTargetEnemy(_instance)
-{
-	for(var i = 0; i < global.playerCount; i++)
-	{
-		if(global.playerArray[i].id != _instance.id)
-		{
-			return global.playerArray[i];
+			return global.playerArray[_i];
 		}
 	}
 }
+
+#region 스킬 관련
+all_skill_coolTime_List = [
+	INF,
+	3,
+	5,
+	5,
+	2,
+	3,
+	10
+];
+
+function GetSkillCoolTime(_skill)
+{
+	return all_skill_coolTime_List[_skill];
+}
+
+function GetAllPlayerAllSkillCoolTimeArray()
+{
+	playerLeftCoolTimeArray = [];
+	for(var _i = 0; _i < playerCount; _i++)
+	{
+		playerLeftCoolTimeArray[_i] = global.playerArray[_i].GetLeftAllSkillCoolTime();
+	}
+	return playerLeftCoolTimeArray;
+}
+#endregion
+
+#region 함수 호출
+CreateMap(1);
+RoundStart();
+instance_create_layer(0, 0, DEFAULT_LAYER, obj_ingame_ui_manager);
+#endregion

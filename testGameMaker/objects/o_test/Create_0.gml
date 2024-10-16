@@ -3,29 +3,9 @@ var _hei = display_get_gui_height()/2;
 
 var _button_width = 500;
 var _button_height = 150;
-
-//var button_instance_id = AddButton(wid, hei, 500, 200);
-with(AddButton(200, 200, 200, 200))
-{
-	SetElementDrawer(self, DRAWER{
-		// 스킬 쿨타임 있을 때
-		draw_sprite_pie_reverse(sp_circle_line_256_256, 0, (_x1+_x2)/2, (_y1+_y2)/2, 0, 270, c_white, _alpha, _xscale * 2, _yscale * 2)
-	});
-	with(AddElement(0, 0, 150, 150, self))
-	{
-		SetElementAlignment(self, AL_CENTER);
-		SetElementDrawer(self, DRAWER{
-			draw_sprite_ext(sp_icon_star_02, 0, (_x1+_x2)/2, (_y1+_y2)/2, _xscale * 2, _yscale * 2, 0, c_white, _alpha);
-		});
-	}
-	
-	SetButtonCallback(self, CALLBACK{
-	});
-}
-
-
 var _margin = 50;
 
+#region 게임 시작 버튼
 with(AddButton(_wid - _button_width/2, _hei - _button_height/2, _button_width, _button_height))
 {
 	SetElementDrawer(self, DRAWER{
@@ -40,10 +20,12 @@ with(AddButton(_wid - _button_width/2, _hei - _button_height/2, _button_width, _
 	}
 	
 	SetButtonCallback(self, CALLBACK{
-		room_goto(MainMenu);
+		room_goto(GameReadyRoom);
 	});
 }
+#endregion
 
+#region 튜토리얼 버튼
 with(AddButton(_wid - _button_width/2, _hei + _button_height/2 + _margin, _button_width, _button_height))
 {
 	var selectButton = SetElementDrawer(self, DRAWER{
@@ -61,13 +43,4 @@ with(AddButton(_wid - _button_width/2, _hei + _button_height/2 + _margin, _butto
 		room_goto(TutorialRoom);
 	});
 }
-
-//CO_SCOPE = id;
-//var _co = CO_BEGIN
-//	DELAY 50 THEN
-//	show_message(11);
-//	DELAY 50 THEN
-//	show_message(11);
-//	DELAY 50 THEN
-//	show_message(11);
-//CO_END
+#endregion

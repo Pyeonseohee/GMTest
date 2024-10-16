@@ -15,30 +15,6 @@ enum SKILL
 
 function InitSkill()
 {
-	var stu_skill_coolTime =
-	{
-		recreate: INF,
-		sword: 3,
-		arrow: 5,
-		volleyball: 5,
-		teleport: 2,
-		dash: 3,
-		bomb: 10
-	};
-	
-	skillCoolTimeList=
-	[
-		stu_skill_coolTime.recreate,
-		stu_skill_coolTime.sword,
-		stu_skill_coolTime.arrow,
-		stu_skill_coolTime.volleyball,
-		stu_skill_coolTime.teleport,
-		stu_skill_coolTime.dash,
-		stu_skill_coolTime.bomb,
-		stu_skill_coolTime.bomb,
-	];
-	
-	
 	skillInvokeFunc = [
 		SkillRecreate,
 		SkillSword,
@@ -49,13 +25,6 @@ function InitSkill()
 		SkillBomb
 	];
 }
-
-// 스킬의 쿨타임을 반환합니다.
-function GetSkillCoolTime(_skill)
-{
-	return skillCoolTimeList[_skill];
-}
-
 // 스킬을 발동시킵니다.
 function InvokeSkill(_invokeInstance, _targetInstance, skill)
 {

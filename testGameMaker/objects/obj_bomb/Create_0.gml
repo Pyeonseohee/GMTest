@@ -4,6 +4,7 @@
 offset = 50;
 current_timer = 0;
 targetInstance = NULL;
+image_speed = 0.3;
 
 function ChangeTarget(_target)
 {

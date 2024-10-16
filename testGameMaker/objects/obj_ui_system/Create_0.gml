@@ -14,16 +14,16 @@ global.all_skill =
 	[SKILL.SWORD, SKILL.TELEPORT, SKILL.VOLLEYBALL]
 ];
 
-global.spr_skill = 
-{
-	recreate: sp_icon_rotation_01,
-	arrow: sp_icon_pin_01,
-	sword: sp_icon_sword_01,
-	volleyball: sp_icon_ball_01,
-	teleport: sp_icon_person_01,
-	dash: sp_icon_shoes_01,
-	bomb: spr_bomb
-};
+global.all_skill_spr = 
+[
+	sp_icon_rotation_01,
+	sp_icon_sword_01,
+	sp_icon_pin_01,
+	sp_icon_ball_01,
+	sp_icon_person_01,
+	sp_icon_shoes_01,
+	spr_bomb
+];
 #endregion
 
 #region About UI element
@@ -50,13 +50,20 @@ function AddBackButton(_x, _y) // 뒤로 가기 버튼
 		SetElementDrawer(self, DRAWER{
 			draw_frame_roundedGlow(_x1, _y1, _x2, _y2, _alpha,  c_yellow, _xscale);
 			draw_frame_12rounded(_x1, _y1, _x2, _y2, _alpha, c_dkgray, _xscale);
-			draw_sprite_ext(sp_icon_arrow_01, 0, (_x1+_x2)/2, (_y1+_y2)/2, _xscale, _yscale, 0, c_white, _alpha);
 		});
+		
+		with(AddElement(0, 0, 0, 0, self))
+		{
+			SetElementAlignment(self, AL_CENTER);
+			SetElementDrawer(self, DRAWER{
+				draw_sprite_ext(sp_icon_home_01, 0, (_x1+_x2)/2, (_y1+_y2)/2, _xscale, _yscale, 0, c_white, _alpha);
+			});
+		}
 	
 		UILIb_button_scaleAnimation(self); // 애니메이션
 	
 		SetButtonCallback(self, CALLBACK{
-			room_goto(Room1);
+			room_goto(Home);
 		});
 	}
 }
@@ -73,8 +80,15 @@ function AddGameStartButton(_parent_width)
 		SetElementDrawer(self, DRAWER{
 			draw_frame_roundedGlow(_x1, _y1, _x2, _y2, _alpha, c_yellow, _xscale);
 			draw_frame_12rounded(_x1, _y1, _x2, _y2, _alpha, c_dkgray, _xscale);
-			draw_sprite_ext(sp_triangle_64_64, 0, (_x1+_x2)/2, (_y1+_y2)/2, _xscale, _yscale, 0, c_white, _alpha);
 		});
+		
+		with(AddElement(0, 0, 0, 0, self))
+		{
+			SetElementAlignment(self, AL_CENTER);
+			SetElementDrawer(self, DRAWER{
+				draw_sprite_ext(sp_triangle_64_64, 0, (_x1+_x2)/2, (_y1+_y2)/2, _xscale, _yscale, 0, c_white, _alpha);
+			});
+		}
 	
 		UILIb_button_scaleAnimation(self); // 애니메이션
 	
@@ -99,11 +113,11 @@ function AddTopBar()
 function AddSkillSlot(_playerIdx, _ins)
 {
 	var _margin = 50;
-	var skillIconSize = 180;
+	var _skillIconSize = 180;
 	
 	for(var i = 0; i < 3; i++)
 	{
-		with(AddButton(0, (skillIconSize + _margin)*(i - 1), skillIconSize, skillIconSize, _ins))
+		with(AddButton(0, (_skillIconSize + _margin)*(i - 1), _skillIconSize, _skillIconSize, _ins))
 		{
 			var _idx = _playerIdx;
 			var _num = i;
@@ -111,56 +125,32 @@ function AddSkillSlot(_playerIdx, _ins)
 			UILIb_button_scaleAnimation(self); // 애니메이션
 			SetElementAlignment(self, AL_CENTER);
 			SetElementVariables(self, {
-				_test: global.all_skill,
+				_all_skill_spr: global.all_skill_spr,
+				_all_skill: global.all_skill,
 				_playerIndex: _idx,
 				_slotNum: _num
 				});
+				
 			SetElementDrawer(self, DRAWER{
 				draw_frame_roundedGlow(_x1, _y1, _x2, _y2, _alpha,  c_yellow, _xscale);
 				draw_frame_12rounded(_x1, _y1, _x2, _y2, _alpha, c_dkgray, _xscale);
-				switch(_test[_playerIndex][_slotNum])
-				{
-					case SKILL.RECREATE:
-						draw_sprite_ext(global.spr_skill.recreate, 0, (_x1+_x2)/2, (_y1+_y2)/2, _xscale, _yscale, 0, c_white, _alpha);
-						break;
-					case SKILL.SWORD:
-						draw_sprite_ext(global.spr_skill.sword, 0, (_x1+_x2)/2, (_y1+_y2)/2, _xscale, _yscale, 0, c_white, _alpha);
-						break;
-					case SKILL.ARROW:
-						draw_sprite_ext(global.spr_skill.arrow, 0, (_x1+_x2)/2, (_y1+_y2)/2, _xscale, _yscale, 0, c_white, _alpha);
-						break;
-					case SKILL.VOLLEYBALL:
-						draw_sprite_ext(global.spr_skill.volleyball, 0, (_x1+_x2)/2, (_y1+_y2)/2, _xscale, _yscale, 0, c_white, _alpha);
-						break;
-					case SKILL.TELEPORT:
-						draw_sprite_ext(global.spr_skill.teleport, 0, (_x1+_x2)/2, (_y1+_y2)/2, _xscale, _yscale, 0, c_white, _alpha);
-						break;
-					case SKILL.DASH:
-						draw_sprite_ext(global.spr_skill.dash, 0, (_x1+_x2)/2, (_y1+_y2)/2, _xscale, _yscale, 0, c_white, _alpha);
-						break;
-					case SKILL.BOMB:
-						draw_sprite_ext(global.spr_skill.bomb, 0, (_x1+_x2)/2, (_y1+_y2)/2, _xscale, _yscale, 0, c_white, _alpha);
-						break;
-					default:
-						break;
-				}
+				draw_sprite_ext(_all_skill_spr[_all_skill[_playerIndex][_slotNum]], 0, (_x1+_x2)/2, (_y1+_y2)/2, _xscale, _yscale, 0, c_white, _alpha);
 			});
 	
 			SetButtonCallback(self, CALLBACK{
 				obj_ui_system.clicked_player = _playerIndex;
 				obj_ui_system.clicked_slot = _slotNum;
-				show_message("클릭한 플레이어: " + string(obj_ui_system.clicked_player) + ", 클릭한 슬롯: " + string(obj_ui_system.clicked_slot));
 			});
 		}
 	}
 }
 
-function AddSkillSlotLeft(_x, _y, _ins)
+function AddSkillSlotLeft(_ins)
 {
 	AddSkillSlot(0, _ins);
 }
 
-function AddSkillSlotRight(_x, _y, _ins)
+function AddSkillSlotRight(_ins)
 {
 	AddSkillSlot(1, _ins);
 }
@@ -170,12 +160,12 @@ function AddSideBar()
 	// 왼쪽 스킬 창
 	with(AddButton(0, topBarHeight, sideBarWidth, display_get_gui_height() - topBarHeight - footBarHeight))
 	{
-		obj_ui_system.AddSkillSlotLeft(x, y, self);
+		obj_ui_system.AddSkillSlotLeft(self);
 	}
 	// 오른쪽 스킬 창
 	with(AddButton(display_get_gui_width() - sideBarWidth, topBarHeight, sideBarWidth, display_get_gui_height() - topBarHeight - footBarHeight))
 	{
-		obj_ui_system.AddSkillSlotRight(x, y, self);
+		obj_ui_system.AddSkillSlotRight(self);
 	}
 }
 #endregion
@@ -221,19 +211,33 @@ function AddFootBar()
 }
 #endregion
 
-#region About player sprtie
-function AddPlayerSprite()
+#region About Center(player sprtie)
+function AddVersusSprite(_ins)
+{
+	with(_ins)
+	{
+		with(AddElement(0, 0, 0, 0, self))
+		{
+			SetElementAlignment(self, AL_CENTER);
+			SetElementDrawer(self, DRAWER{
+				draw_sprite_ext(sp_versus_01, 0, (_x1+_x2)/2, (_y1+_y2)/2, _xscale*2, _yscale*2, 0, c_white, _alpha);
+			});
+		}
+	}
+	
+}
+
+function AddPlayerSprite(_ins)
 {
 	var _player_margin = 500;
 	var _player_offset = 100;
 	var _player_y = display_get_gui_height()/2;
 	var _player_size = 300;
 	
-	var _par = AddElement(sideBarWidth, topBarHeight, display_get_gui_width() - sideBarWidth*2, display_get_gui_height() - topBarHeight - footBarHeight)
-	with(_par)
+	with(_ins)
 	{
 		// 플레이어 1 생성
-		with(AddButton(-1*_player_margin, 0, _player_size, _player_size, self))
+		with(AddButton(-1*_player_margin, _player_offset, _player_size, _player_size, self))
 		{
 			SetElementAlignment(self, AL_CENTER);
 			SetElementDrawer(self, DRAWER{
@@ -242,7 +246,7 @@ function AddPlayerSprite()
 		}
 
 		// 플레이어 2 생성
-		with(AddButton(_player_margin, 0, _player_size, _player_size))
+		with(AddButton(_player_margin, _player_offset, _player_size, _player_size, self))
 		{
 			SetElementAlignment(self, AL_CENTER);
 			SetElementDrawer(self, DRAWER{
@@ -251,11 +255,19 @@ function AddPlayerSprite()
 		}
 	}
 }
+
+function AddCenterBar()
+{
+	var _par = AddElement(sideBarWidth, topBarHeight, display_get_gui_width() - sideBarWidth*2, display_get_gui_height() - topBarHeight - footBarHeight)
+	AddPlayerSprite(_par);
+	AddVersusSprite(_par)
+}
+
 #endregion
 
 #region 실제 함수 호출
 AddTopBar();
 AddSideBar();
 AddFootBar();
-AddPlayerSprite();
+AddCenterBar();
 #endregion
