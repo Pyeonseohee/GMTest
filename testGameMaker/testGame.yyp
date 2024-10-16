@@ -64,8 +64,6 @@
     {"id":{"name":"obj_ingame_manager","path":"objects/obj_ingame_manager/obj_ingame_manager.yy",},},
     {"id":{"name":"obj_mainmenu_manager","path":"objects/obj_mainmenu_manager/obj_mainmenu_manager.yy",},},
     {"id":{"name":"obj_player_parent","path":"objects/obj_player_parent/obj_player_parent.yy",},},
-    {"id":{"name":"obj_player1","path":"objects/obj_player1/obj_player1.yy",},},
-    {"id":{"name":"obj_player2","path":"objects/obj_player2/obj_player2.yy",},},
     {"id":{"name":"obj_recreate","path":"objects/obj_recreate/obj_recreate.yy",},},
     {"id":{"name":"obj_skill_background","path":"objects/obj_skill_background/obj_skill_background.yy",},},
     {"id":{"name":"obj_sword","path":"objects/obj_sword/obj_sword.yy",},},

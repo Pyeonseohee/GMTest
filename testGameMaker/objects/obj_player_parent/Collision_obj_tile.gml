@@ -15,7 +15,7 @@ if(!GetIsOnGround())
     var dir = point_direction(cx, cy, x, y); // 플레이어와 중심 간의 각도 계산
 	
 	image_angle = dir - 90;
-	
+	SetCurrentRadius(dir);
 	hspeed = 0;
 	
 	x = cx + lengthdir_x(radius, dir);

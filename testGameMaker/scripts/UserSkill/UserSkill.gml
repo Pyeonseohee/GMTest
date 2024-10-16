@@ -1,6 +1,6 @@
 // Script assets have changed for v2.3.0 see
 // https://help.yoyogames.com/hc/en-us/articles/360005277377 for more information
-#macro SKILL_COUNT 5
+#macro SKILL_COUNT 7
 #macro INF infinity
 enum SKILL
 {

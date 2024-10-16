@@ -21,6 +21,7 @@ player1KeyMap = {
 	left: ord("A"),
 	right: ord("D"),
 	jump: ord("W"),
+	drop: ord("S"),
 	skill1: ord("C"),
 	skill2: ord("V"),
 	skill3: ord("B")
@@ -31,6 +32,7 @@ player2KeyMap = {
 	left: vk_left,
 	right: vk_right,
 	jump: vk_up,
+	drop: vk_down,
 	skill1: ord("I"),
 	skill2: ord("O"),
 	skill3: ord("P")
@@ -65,10 +67,6 @@ function CreateMap(_mapType)
 	switch(_mapType)
 	{
 		case 0:
-			groundArray[0] = instance_create_layer(center_x, center_y, "Environments", obj_tile, 
-			{image_xscale: 3, image_yscale: 3});
-			AddPlayer(center_x, 100, player1KeyMap, "P1");
-			AddPlayer(center_x, 100, player2KeyMap, "P2", c_yellow);
 			break;
 		case 1:
 			groundArray[0] = instance_create_layer(0, 0, "Environments", obj_tile,
@@ -97,7 +95,7 @@ function CreateMap(_mapType)
 	}
 }
 
-function AddPlayer(_x, _y, stu_keyMap, _name, _color = c_white)
+function AddPlayer(stu_keyMap, _name, _color = c_white)
 {
 	for(var i = 0; i < groundCount; i++)
 	{
@@ -116,6 +114,7 @@ function AddPlayer(_x, _y, stu_keyMap, _name, _color = c_white)
 			});
 			global.playerArray[global.playerCount].MatchKey(stu_keyMap);
 			global.playerArray[global.playerCount].SetName(_name);
+			global.playerArray[global.playerCount].InitSkill(global.all_skill[global.playerCount]);
 			global.playerCount++;
 			break;
 		}	
@@ -161,9 +160,4 @@ function GetTargetEnemy(_instance)
 			return global.playerArray[i];
 		}
 	}
-}
-
-function SetSkill(_skill)
-{
-	
 }

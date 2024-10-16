@@ -7,6 +7,7 @@ function InitUserInput()
 	input_left = false;
 	input_right = false;
 	can_jump = false;
+	can_drop = false;
 	is_on_ground = false;
 }
 
@@ -21,6 +22,11 @@ function GetIsOnGround()
 function GetCanJump()
 {
 	return can_jump;
+}
+
+function GetCanDrop()
+{
+	return can_drop;
 }
 
 function GetInputLeft()
@@ -41,9 +47,16 @@ function SetIsOnGround(_val)
 	is_on_ground = _val
 }
 
+
+
 function SetCanJump(_val)
 {
 	can_jump = _val
+}
+
+function SetCanDrop(_val)
+{
+	can_drop = _val
 }
 
 #endregion
@@ -82,4 +95,5 @@ function OnTheGround()
 {
 	is_on_ground = true;
 	can_jump = true;
+	can_drop = true;
 };

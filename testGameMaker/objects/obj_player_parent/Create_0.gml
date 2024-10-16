@@ -36,17 +36,11 @@ InitSkill();
 #endregion
 
 #region 스킬 관련
-user_skill = {
-	skill1: SKILL.SWORD,
-	skill2: SKILL.DASH,
-	skill3: SKILL.BOMB
-};
+user_skill_list = [];
 
-function SetSkill(_skill)
+function InitSkill(_skillList)
 {
-	user_skill.skill1 = _skill.skill1;
-	user_skill.skill2 = _skill.skill2;
-	user_skill.skill3 = _skill.skill3;
+	user_skill_list = _skillList;
 }
 
 function ReceiveBomb()
@@ -123,6 +117,7 @@ function GetName()
 leftKey = NULL;
 rightKey = NULL;
 jumpKey = NULL;
+dropKey = NULL;
 skill1 = NULL;
 skill2 = NULL;
 skill3 = NULL;
@@ -132,6 +127,7 @@ function MatchKey(stu_keyMap)
 	leftKey = stu_keyMap.left;
 	rightKey = stu_keyMap.right;
 	jumpKey = stu_keyMap.jump;
+	dropKey = stu_keyMap.drop;
 	skill1 = stu_keyMap.skill1;
 	skill2 = stu_keyMap.skill2;
 	skill3 = stu_keyMap.skill3;
@@ -197,19 +193,27 @@ function CheckUserInput()
 		}
 	}
 	
+	if(keyboard_check_pressed(dropKey))
+	{
+		if(can_drop)
+		{
+			Drop();
+		}
+	}
+	
 	if(keyboard_check_pressed(skill1))
 	{
-		InvokeSkill(id, global.gameManager.GetTargetEnemy(self), user_skill.skill1);
+		InvokeSkill(id, global.gameManager.GetTargetEnemy(self), user_skill_list[0]);
 	}
 
 	if(keyboard_check_pressed(skill2))
 	{
-		InvokeSkill(id, global.gameManager.GetTargetEnemy(self), user_skill.skill2);
+		InvokeSkill(id, global.gameManager.GetTargetEnemy(self), user_skill_list[1]);
 	}
 
 	if(keyboard_check_pressed(skill3))
 	{
-		InvokeSkill(id, global.gameManager.GetTargetEnemy(self), user_skill.skill3);
+		InvokeSkill(id, global.gameManager.GetTargetEnemy(self), user_skill_list[2]);
 	}
 }
 
