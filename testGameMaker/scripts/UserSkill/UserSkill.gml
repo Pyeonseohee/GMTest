@@ -55,8 +55,16 @@ function SkillSword(_invokeInstance, _targetInstance)
 	var sword_image_dir = dir - 90;
 	_x = cx + lengthdir_x(radius + offset, dir);
 	_y = cy + lengthdir_y(radius + offset, dir);
-	var sword_obj = instance_create_layer(_x, _y, "Instances", obj_sword, {image_xscale: 3, image_yscale: 5, depth: 101, image_angle: sword_image_dir});
-	sword_obj.CreateSword(collision_obj);
+	
+	if(instance_exists(obj_sword)) 
+	{
+		for(var _i = 0; _i < instance_number(obj_sword); _i++)
+		{
+			instance_destroy(instance_find(obj_sword, _i));
+		}
+	}
+	var sword_obj = instance_create_layer(0, 0, "Instances", obj_sword, {image_xscale: 3, image_yscale: 5, depth: 101, image_angle: sword_image_dir});
+	sword_obj.CreateSword(collision_obj, dir);
 }
 #endregion
 
@@ -115,11 +123,11 @@ function SkillDash(_invokeInstance, _targetInstance)
 		// 여기서는 땅바닥에서 대쉬합니다
 		if(GetInputLeft())
 		{
-			MoveLandAlongEdge(-1, 30);
+			MoveLandAlongEdge(-1, 40);
 		}
 		else if(GetInputRight())
 		{
-			MoveLandAlongEdge(1, 30);
+			MoveLandAlongEdge(1, 40);
 		}
 		else{} // 멈췄을 때
 		
@@ -129,11 +137,11 @@ function SkillDash(_invokeInstance, _targetInstance)
 		// 여기선 공중에서 대쉬
 		if(GetInputLeft())
 		{
-			MoveHorizontal(-1, 120);
+			MoveHorizontal(-1, 150);
 		}
 		else if(GetInputRight())
 		{
-			MoveHorizontal(1, 120);
+			MoveHorizontal(1, 150);
 		}
 		else{} // 멈췄을 때
 	}
@@ -144,8 +152,8 @@ function SkillDash(_invokeInstance, _targetInstance)
 #region 폭탄 스킬
 function SkillBomb(_invokeInstance, _targetInstance)
 {
-	_targetInstance.ReceiveBomb();
-	var bomb = instance_create_layer(_targetInstance.x, _targetInstance.y, DEFAULT_LAYER, obj_bomb );
-	bomb.ChangeTarget(_targetInstance);
+	_invokeInstance.ReceiveBomb();
+	var bomb = instance_create_layer(_invokeInstance.x, _invokeInstance.y, DEFAULT_LAYER, obj_bomb );
+	bomb.ChangeTarget(_invokeInstance);
 }
 #endregion

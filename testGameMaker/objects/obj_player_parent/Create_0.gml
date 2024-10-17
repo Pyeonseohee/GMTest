@@ -48,19 +48,7 @@ function InitSkill(_skillList)
 	user_skill_list = _skillList;
 }
 
-function GetLeftSkillCoolTime(_slotNum)
-{
-	return skillCoolTimeArray[_slotNum];
-}
-function DecreaseLeftSkillCoolTime(_slotNum, _val)
-{
-	skillCoolTimeArray[_slotNum] -= _val;
-}
 
-function ResetLeftSkillCoolTime(_slotNum, _skill)
-{
-	skillCoolTimeArray[_slotNum] = obj_ingame_manager.GetSkillCoolTime(_skill);
-}
 
 function GetLeftAllSkillCoolTime()
 {
@@ -208,22 +196,21 @@ function CheckUserInput()
 		if(can_drop) Drop();
 	}
 	
-	if(keyboard_check_pressed(skill1) && GetLeftSkillCoolTime(0) == 0)
+	if(keyboard_check_pressed(skill1) && obj_ingame_manager.GetLeftSkillCoolTime(GetIndex(), 0) == 0)
 	{
-		show_message("스킬 1!!!!");
-		ResetLeftSkillCoolTime(0, user_skill_list[0]);
+		obj_ingame_manager.ResetLeftSkillCoolTime(GetIndex(), 0, user_skill_list[0]);
 		InvokeSkill(id, global.gameManager.GetTargetEnemy(self), user_skill_list[0]);
 	}
 
-	if(keyboard_check_pressed(skill2) && GetLeftSkillCoolTime(1) == 0)
+	if(keyboard_check_pressed(skill2) && obj_ingame_manager.GetLeftSkillCoolTime(GetIndex(), 1) == 0)
 	{
-		ResetLeftSkillCoolTime(1, user_skill_list[1]);
+		obj_ingame_manager.ResetLeftSkillCoolTime(GetIndex(), 1, user_skill_list[1]);
 		InvokeSkill(id, global.gameManager.GetTargetEnemy(self), user_skill_list[1]);
 	}
 
-	if(keyboard_check_pressed(skill3) && GetLeftSkillCoolTime(2) == 0)
+	if(keyboard_check_pressed(skill3) && obj_ingame_manager.GetLeftSkillCoolTime(GetIndex(), 2) == 0)
 	{
-		ResetLeftSkillCoolTime(2, user_skill_list[2]);
+		obj_ingame_manager.ResetLeftSkillCoolTime(GetIndex(), 2, user_skill_list[2]);
 		InvokeSkill(id, global.gameManager.GetTargetEnemy(self), user_skill_list[2]);
 	}
 }
@@ -273,9 +260,9 @@ function CheckSkillCoolTime()
 	var _decreaseValue = 1;
 	for(var _i = 0; _i < 3; _i++)
 	{
-		if(GetLeftSkillCoolTime(_i) > 0)
+		if(obj_ingame_manager.GetLeftSkillCoolTime(GetIndex(), _i) > 0)
 		{
-			DecreaseLeftSkillCoolTime(_i, _decreaseValue/room_speed);
+			obj_ingame_manager.DecreaseLeftSkillCoolTime(GetIndex(), _i, _decreaseValue/room_speed);
 		}
 	}
 }

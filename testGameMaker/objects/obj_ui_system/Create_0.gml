@@ -63,7 +63,7 @@ function AddBackButton(_x, _y) // 뒤로 가기 버튼
 		UILIb_button_scaleAnimation(self); // 애니메이션
 	
 		SetButtonCallback(self, CALLBACK{
-			room_goto(Home);
+			room_goto(r_Home);
 		});
 	}
 }
@@ -93,7 +93,7 @@ function AddGameStartButton(_parent_width)
 		UILIb_button_scaleAnimation(self); // 애니메이션
 	
 		SetButtonCallback(self, CALLBACK{
-			room_goto(InGameRoom); 
+			room_goto(r_InGameRoom); 
 		});
 	}
 }
@@ -212,6 +212,19 @@ function AddFootBar()
 #endregion
 
 #region About Center(player sprtie)
+function AddExplainText(_ins)
+{
+	with(_ins)
+	{
+		with(AddLabel(0, 0, 0, 0, "꼬물이가 사용할 스킬을 선택해주세요!", self))
+		{
+			SetLabel(self, c_black, 2, 2, 1, 10, AL_TOPCENTER);
+			SetElementFit(self, FIT_FULL);
+			
+		}
+	}
+}
+
 function AddVersusSprite(_ins)
 {
 	with(_ins)
@@ -241,7 +254,7 @@ function AddPlayerSprite(_ins)
 		{
 			SetElementAlignment(self, AL_CENTER);
 			SetElementDrawer(self, DRAWER{
-				draw_sprite_ext(spr_sSlime_Walk, 0, (_x1+_x2)/2, (_y1+_y2)/2, _xscale*8, _yscale*8, 0, c_green, _alpha);
+				draw_sprite_ext(spr_sSlime_Walk, 0, (_x1+_x2)/2, (_y1+_y2)/2, _xscale*8, _yscale*8, 0, c_white, _alpha);
 			});
 		}
 
@@ -260,7 +273,8 @@ function AddCenterBar()
 {
 	var _par = AddElement(sideBarWidth, topBarHeight, display_get_gui_width() - sideBarWidth*2, display_get_gui_height() - topBarHeight - footBarHeight)
 	AddPlayerSprite(_par);
-	AddVersusSprite(_par)
+	AddVersusSprite(_par);
+	AddExplainText(_par);
 }
 
 #endregion

@@ -57,16 +57,10 @@ function AddRecreateSkill(_ins, _idx)
 		});
 	}
 				
-	// 클릭하면 스킬 변경
-	SetButtonCallback(self, CALLBACK{
-		if(obj_ui_system.clicked_player == NULL || obj_ui_system.clicked_slot == NULL) return ;
-		global.all_skill[obj_ui_system.clicked_player][obj_ui_system.clicked_slot] = SKILL.RECREATE;
-	});
 	
 	// 호버인듯
 	SetButtonFocusCallback(self,CALLBACK{
-		SetLabelText(obj_ui_system.skillExplainLabel, "RECREATEEEEE")
-		//show_message("플레이어가 바라보는 방향으로 직선 궤도로 나아가는 화살을 발사합니다." );  
+		SetLabelText(obj_ui_system.skillExplainLabel, "부활.. 기능이지만 구현하지 못했으니 넘어가주세여..")
 	});
 	
 }
@@ -90,12 +84,20 @@ function AddSwordSkill(_ins, _idx)
 	// 클릭하면 스킬 변경
 	SetButtonCallback(self, CALLBACK{
 		if(obj_ui_system.clicked_player == NULL || obj_ui_system.clicked_slot == NULL) return ;
+		for(var _i = 0; _i < 3; _i++)
+		{
+			if(global.all_skill[obj_ui_system.clicked_player][_i] == SKILL.SWORD)
+			{
+				show_message("똑같은 스킬이 다른 슬롯에 있습니다! 다른 스킬을 선택해주세요");
+				return ;
+			}
+		}
 		global.all_skill[obj_ui_system.clicked_player][obj_ui_system.clicked_slot] = SKILL.SWORD;
 	});
 	
 	// 호버인듯
 	SetButtonFocusCallback(self, CALLBACK{
-		SetLabelText(obj_ui_system.skillExplainLabel, "SWORRRRDD")
+		SetLabelText(obj_ui_system.skillExplainLabel, "플레이어가 땅에 있을 때 검을 꽂아 반대편 플레이어를 공격할 수 있습니다.")
 		//show_message("플레이어가 바라보는 방향으로 직선 궤도로 나아가는 화살을 발사합니다." );  
 	});
 	
@@ -121,13 +123,20 @@ function AddArrowSkill(_ins, _idx)
 	// 클릭하면 스킬 변경
 	SetButtonCallback(self, CALLBACK{
 		if(obj_ui_system.clicked_player == NULL || obj_ui_system.clicked_slot == NULL) return ;
+		for(var _i = 0; _i < 3; _i++)
+		{
+			if(global.all_skill[obj_ui_system.clicked_player][_i] == SKILL.ARROW)
+			{
+				show_message("똑같은 스킬이 다른 슬롯에 있습니다! 다른 스킬을 선택해주세요");
+				return ;
+			}
+		}
 		global.all_skill[obj_ui_system.clicked_player][obj_ui_system.clicked_slot] = SKILL.ARROW;
 	});
 
 	// 호버인듯
 	SetButtonFocusCallback(self, CALLBACK{
-		SetLabelText(obj_ui_system.skillExplainLabel, "ARROOWWWWWW")
-		//show_message("플레이어가 바라보는 방향으로 직선 궤도로 나아가는 화살을 발사합니다." );  
+		SetLabelText(obj_ui_system.skillExplainLabel, "플레이어가 바라보는 방향으로 직선 궤도로 나아가는 화살을 발사합니다.")
 	});
 	
 }
@@ -151,13 +160,20 @@ function AddVolleyballSkill(_ins, _idx)
 	// 클릭하면 스킬 변경
 	SetButtonCallback(self, CALLBACK{
 		if(obj_ui_system.clicked_player == NULL || obj_ui_system.clicked_slot == NULL) return ;
+		for(var _i = 0; _i < 3; _i++)
+		{
+			if(global.all_skill[obj_ui_system.clicked_player][_i] == SKILL.VOLLEYBALL)
+			{
+				show_message("똑같은 스킬이 다른 슬롯에 있습니다! 다른 스킬을 선택해주세요");
+				return ;
+			}
+		}
 		global.all_skill[obj_ui_system.clicked_player][obj_ui_system.clicked_slot] = SKILL.VOLLEYBALL;
 	});
 	
 	// 호버인듯
 	SetButtonFocusCallback(self, CALLBACK{
-		SetLabelText(obj_ui_system.skillExplainLabel, "VOLLEYYBALLL")
-		//show_message("플레이어가 바라보는 방향으로 직선 궤도로 나아가는 화살을 발사합니다." );  
+		SetLabelText(obj_ui_system.skillExplainLabel, "플레이어가 땅에 있을 때 배구공을 굴려 적을 공격합니다.")
 	});
 	
 }
@@ -181,14 +197,20 @@ function AddTeleportSkill(_ins, _idx)
 	// 클릭하면 스킬 변경
 	SetButtonCallback(self, CALLBACK{
 		if(obj_ui_system.clicked_player == NULL || obj_ui_system.clicked_slot == NULL) return ;
+		for(var _i = 0; _i < 3; _i++)
+		{
+			if(global.all_skill[obj_ui_system.clicked_player][_i] == SKILL.TELEPORT)
+			{
+				show_message("똑같은 스킬이 다른 슬롯에 있습니다! 다른 스킬을 선택해주세요");
+				return ;
+			}
+		}
 		global.all_skill[obj_ui_system.clicked_player][obj_ui_system.clicked_slot] = SKILL.TELEPORT;
 	});
 	
 	// 호버인듯
 	SetButtonFocusCallback(self, CALLBACK{
-		SetLabelText(obj_ui_system.skillExplainLabel, "TELLEPORTTT " + string(obj_ui_system.clicked_player) + ", " + string(obj_ui_system.clicked_slot));
-		
-		//show_message("플레이어가 바라보는 방향으로 직선 궤도로 나아가는 화살을 발사합니다." );  
+		SetLabelText(obj_ui_system.skillExplainLabel, "플레이어가 땅에 있을 때 평행한 반대편으로 순간이동 합니다.");
 	});
 	
 }
@@ -212,13 +234,20 @@ function AddDashSkill(_ins, _idx)
 	// 클릭하면 스킬 변경
 	SetButtonCallback(self, CALLBACK{
 		if(obj_ui_system.clicked_player == NULL || obj_ui_system.clicked_slot == NULL) return ;
+		for(var _i = 0; _i < 3; _i++)
+		{
+			if(global.all_skill[obj_ui_system.clicked_player][_i] == SKILL.DASH)
+			{
+				show_message("똑같은 스킬이 다른 슬롯에 있습니다! 다른 스킬을 선택해주세요");
+				return ;
+			}
+		}
 		global.all_skill[obj_ui_system.clicked_player][obj_ui_system.clicked_slot] = SKILL.DASH;
 	});
 	
 	// 호버인듯
 	SetButtonFocusCallback(self,CALLBACK{
-		SetLabelText(obj_ui_system.skillExplainLabel, "DASSSHH")
-		//show_message("플레이어가 바라보는 방향으로 직선 궤도로 나아가는 화살을 발사합니다." );  
+		SetLabelText(obj_ui_system.skillExplainLabel, "플레이어가 빠르게 이동합니다(like 점멸..)")
 	});
 	
 }
@@ -243,12 +272,20 @@ function AddBombSkill(_ins, _idx)
 	// 클릭하면 스킬 변경
 	SetButtonCallback(self, CALLBACK{
 		if(obj_ui_system.clicked_player == NULL || obj_ui_system.clicked_slot == NULL) return ;
+		for(var _i = 0; _i < 3; _i++)
+		{
+			if(global.all_skill[obj_ui_system.clicked_player][_i] == SKILL.BOMB)
+			{
+				show_message("똑같은 스킬이 다른 슬롯에 있습니다! 다른 스킬을 선택해주세요");
+				return ;
+			}
+		}
 		global.all_skill[obj_ui_system.clicked_player][obj_ui_system.clicked_slot] = SKILL.BOMB;
 	});
 	
 	// 호버인듯
 	SetButtonFocusCallback(self, CALLBACK{
-		SetLabelText(obj_ui_system.skillExplainLabel, "BOMMBBB")
+		SetLabelText(obj_ui_system.skillExplainLabel, "상대방에게 폭탄을 붙여 공격합니다.")
 		//show_message("플레이어가 바라보는 방향으로 직선 궤도로 나아가는 화살을 발사합니다." );  
 	});
 }

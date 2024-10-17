@@ -12,7 +12,10 @@
     "name":"SKILL",
     "path":"folders/오브젝트/SKILL.yy",
   },
-  "parentObjectId":null,
+  "parentObjectId":{
+    "name":"obj_skill",
+    "path":"objects/obj_skill/obj_skill.yy",
+  },
   "persistent":false,
   "physicsAngularDamping":0.1,
   "physicsDensity":0.5,

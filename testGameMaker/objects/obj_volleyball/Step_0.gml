@@ -21,12 +21,3 @@ var test_dir = dir + 7;
 		
 x = cx + lengthdir_x(radius, test_dir);
 y = cy + lengthdir_y(radius, test_dir);
-
-var point = [x, y]; // 현재 위치
-
-array_push(trajectory, point); // 현재 위치를 배열에 추가
-
-// 궤적 길이 제한
-if (array_length(trajectory) > trail_length) {
-    array_shift(trajectory); // 가장 오래된 점 삭제
-}

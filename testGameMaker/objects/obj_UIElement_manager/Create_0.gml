@@ -51,7 +51,7 @@ window_width_temp = window_get_width();
 window_height_temp = window_get_height();
 ui_scale_temp = ui_scale;
 
-window_set_size(2346*0.7, 1125*0.7);
+window_set_size(2346*1.2, 1125*1.2);
 //window_set_size();
 //window_set_size(2346*1.5, 1125*1.5);
 
@@ -217,3 +217,4 @@ lastPointProperties = {
 }
 
 event_user(0);
+room_goto(r_Home);

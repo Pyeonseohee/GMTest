@@ -4,9 +4,14 @@
 offset = 50;
 current_timer = 0;
 targetInstance = NULL;
-image_speed = 0.3;
+image_speed = 0.5;
 
 function ChangeTarget(_target)
 {
 	targetInstance = _target;
+}
+
+function CreateExplain()
+{
+	//_targetExplain
 }

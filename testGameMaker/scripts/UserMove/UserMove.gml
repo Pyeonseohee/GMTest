@@ -78,7 +78,7 @@ function MoveLandAlongEdge(_dir, _spd = RADIAN_SPEED)
 	}
 };
 
-function MoveHorizontal(_dir, _spd = 9)
+function MoveHorizontal(_dir, _spd = 15)
 {	
 	if(_dir < 0) // 왼쪽으로 이동
 	{
@@ -107,11 +107,11 @@ function Jump()
 		var radius = ground.sprite_width / 2;
 		var dir = point_direction(cx, cy, x, y); // 플레이어와 중심 간의 각도 계산
 	
-		if (dir >= 181 && dir <= 365) {
+		if (dir >= 180 && dir <= 360) {
 	        return ;
 	    } else {
 	        // 일반 위쪽 점프 처리
-	        vspeed = -10;  // 위로 점프
+	        vspeed = -12;  // 위로 점프
 	    }
 	
 		SetIsOnGround(false);
@@ -135,7 +135,7 @@ function Drop()
 		var radius = ground.sprite_width / 2;
 		var dir = point_direction(cx, cy, x, y); // 플레이어와 중심 간의 각도 계산
 	
-		if (dir >= 181 && dir <= 365){
+		if (dir >= 180 && dir <= 360){
 	        vspeed = 7;  // 아래로 떨어짐
 	    }
 		else{
@@ -161,9 +161,10 @@ function MoveOpponent()
 	
 		// 원형 경계 따라 이동
 		var radius = collision_obj_tile.sprite_width / 2;
-		var dir = point_direction(cx, cy, x, y); // 플레이어와 중심 간의 각도 계산
+		//var dir = point_direction(cx, cy, x, y); // 플레이어와 중심 간의 각도 계산
 		
-		var _ddir = 180 + dir;
+		var _ddir = 180 + current_radius;
+		current_radius = _ddir;
 		image_angle = _ddir - 90;
 		
 		x = cx + lengthdir_x(radius, _ddir);

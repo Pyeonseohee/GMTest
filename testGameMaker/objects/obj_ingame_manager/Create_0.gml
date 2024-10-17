@@ -1,15 +1,18 @@
 /// @description Insert description here
 // You can write your code in this editor
+
+#macro COUNT_DOWN 3
 application_surface_enable(false);
 global.gameManager = self;
 global.playerArray = [];
-
-playerLeftCoolTimeArray = [];
 
 playerScore = [0, 0];
 playerCount = 2;
 groundArray = [];
 groundCount = 0;
+roundScore = [];
+
+
 
 #region 키 맵핑 정의
 player1KeyMap = {
@@ -33,6 +36,20 @@ player2KeyMap = {
 }
 #endregion
 
+
+#region 카운트 다운
+
+current_count_down = COUNT_DOWN;
+is_countDown = false;
+
+function StartCountDown()
+{
+	is_countDown = true;
+}
+
+
+#endregion
+
 #region About 라운드
 current_round = 0;
 maxRound = 3;
@@ -40,48 +57,62 @@ maxScore = 2;
 
 
 is_round_end = true;
-is_match_end = false;
+is_game_end = false;
+
 
 function IsGameEnd()
 {
-	return (is_round_end || is_match_end);
+	return (is_round_end || is_game_end);
 }
 
 function GameEnd()
 {
 	is_round_end = true;
-	is_match_end = true;
+	is_game_end = true;
 	
 	show_message("게임이 끝났습니다!!!!!");
+	
+	CO_SCOPE = id;
+	var _co = CO_BEGIN
+	DELAY 2000 THEN
+	room_goto(r_Home);
+	CO_END
 }
 
 function RoundEnd()
 {
+	var _playerName = global.playerArray[roundScore[current_round]].GetName();
 	is_round_end = true;
+	
+	  
 	for(var _i = 0; _i < playerCount; _i++)
 	{
 		instance_destroy(global.playerArray[_i]);
 	}
 	global.playerArray = [];
+	obj_ingame_ui_manager.ShowGameOver(_playerName);
 	
 	CO_SCOPE = id;
 	var _co = CO_BEGIN
-	DELAY 3000 THEN
+	DELAY 2000 THEN
+	obj_ingame_ui_manager.HideGameOver();
+	obj_ingame_ui_manager.StartCountDown();
+	DELAY 3000 THEN 
+	obj_ingame_ui_manager.EndCountDown();
+	obj_ingame_ui_manager.ShowGameStart();
 	RoundStart();
+	DELAY 2000 THEN
+	obj_ingame_ui_manager.HideGameStart();
 	CO_END
 }
 
 function RoundStart()
 {
-	CO_SCOPE = id;
-	var _co = CO_BEGIN
-	DELAY 3000 THEN
-	show_message("시작!");
 	is_round_end = false;
 	current_round++;
-	CO_END
 	AddPlayer(0, player1KeyMap, "P1");
 	AddPlayer(1, player2KeyMap, "P2", c_yellow);
+	ResetSkillLeftCoolTime();
 }
 
 function CheckRoundEnd()
@@ -102,6 +133,7 @@ function CheckRoundEnd()
 	{
 		var _player = alivePlayer[0];
 		playerScore[_player.GetIndex()]++;
+		roundScore[current_round] = _player.GetIndex();
 		if(playerScore[_player.GetIndex()] >= maxScore) // maxScore에 도달하면 게임이 끝납니다.
 		{
 			GameEnd();
@@ -172,6 +204,7 @@ function AddPlayer(_idx, stu_keyMap, _name, _color = c_white)
 	}
 }
 
+
 function GetTargetEnemy(_ins)
 {
 	for(var _i = 0; _i < playerCount; _i++)
@@ -184,7 +217,8 @@ function GetTargetEnemy(_ins)
 }
 
 #region 스킬 관련
-all_skill_coolTime_List = [
+skill_slot_count = 3;
+all_skill_coolTime_Array = [
 	INF,
 	3,
 	5,
@@ -194,24 +228,64 @@ all_skill_coolTime_List = [
 	10
 ];
 
-function GetSkillCoolTime(_skill)
+player_left_skill_coolTime = 
+[
+	[0, 0, 0],
+	[0, 0, 0]
+];
+
+function GetLeftSkillCoolTime(_playerIdx, _slotNum)
 {
-	return all_skill_coolTime_List[_skill];
+	return GetAllPlayerLeftSkillCoolTimeArray()[_playerIdx][_slotNum];
+}
+function DecreaseLeftSkillCoolTime(_playerIdx, _slotNum, _val)
+{
+	player_left_skill_coolTime[_playerIdx][_slotNum] -= _val;
+	if(player_left_skill_coolTime[_playerIdx][_slotNum] < 0)
+	{
+		player_left_skill_coolTime[_playerIdx][_slotNum] = 0;
+	}
 }
 
-function GetAllPlayerAllSkillCoolTimeArray()
+function ResetLeftSkillCoolTime(_playerIdx, _slotNum, _skill)
 {
-	playerLeftCoolTimeArray = [];
+	GetAllPlayerLeftSkillCoolTimeArray()[_playerIdx][_slotNum] = obj_ingame_manager.GetSkillDefaultCoolTime(_skill);
+}
+
+function ResetSkillLeftCoolTime()
+{	
 	for(var _i = 0; _i < playerCount; _i++)
 	{
-		playerLeftCoolTimeArray[_i] = global.playerArray[_i].GetLeftAllSkillCoolTime();
+		for(var _j = 0; _j < skill_slot_count; _j++)
+		{
+			GetAllPlayerLeftSkillCoolTimeArray()[_i][_j] = 0;
+		}
 	}
-	return playerLeftCoolTimeArray;
+}
+
+function GetAllPlayerLeftSkillCoolTimeArray()
+{
+	return player_left_skill_coolTime;
+}
+
+function GetSkillDefaultCoolTime(_skill)
+{
+	return all_skill_coolTime_Array[_skill];
 }
 #endregion
 
 #region 함수 호출
 CreateMap(1);
+CO_SCOPE = id;
+var _co = CO_BEGIN
+ingmae_ui_manager = instance_create_layer(0, 0, DEFAULT_LAYER, obj_ingame_ui_manager);
+obj_ingame_ui_manager.StartCountDown();
+DELAY 3000 THEN
+obj_ingame_ui_manager.EndCountDown();
+obj_ingame_ui_manager.ShowGameStart();
 RoundStart();
-instance_create_layer(0, 0, DEFAULT_LAYER, obj_ingame_ui_manager);
+DELAY 2000 THEN
+obj_ingame_ui_manager.HideGameStart();
+CO_END
+
 #endregion
