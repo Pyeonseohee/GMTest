@@ -106,6 +106,7 @@ function SkillVolleyBall(_invokeInstance, _targetInstance)
 #region 텔레포트 스킬
 function SkillTeleport(_invokeInstance, _targetInstance)
 {
+	audio_play_sound(sound_teleport, 0, false);
 	MoveOpponent();
 }
 #endregion
@@ -114,7 +115,8 @@ function SkillTeleport(_invokeInstance, _targetInstance)
 #region 대시 스킬
 function SkillDash(_invokeInstance, _targetInstance)
 {
-	effect_create_below(ef_smokeup, _invokeInstance.x, _invokeInstance.y, 50, c_orange);
+	audio_sound_set_track_position(audio_play_sound(sound_wind, 0, false), 0.3);
+	effect_create_below(ef_smokeup, _invokeInstance.x, _invokeInstance.y, 500, c_orange);
 	
 	if(GetIsOnGround())
 	{
@@ -152,8 +154,9 @@ function SkillDash(_invokeInstance, _targetInstance)
 #region 폭탄 스킬
 function SkillBomb(_invokeInstance, _targetInstance)
 {
-	_invokeInstance.ReceiveBomb();
+	
 	var bomb = instance_create_layer(_invokeInstance.x, _invokeInstance.y, DEFAULT_LAYER, obj_bomb );
+	_invokeInstance.ReceiveBomb(bomb);
 	bomb.ChangeTarget(_invokeInstance);
 }
 #endregion

@@ -36,8 +36,8 @@
   "resourceVersion":"2.0",
   "solid":false,
   "spriteId":{
-    "name":"spr_arrow",
-    "path":"sprites/spr_arrow/spr_arrow.yy",
+    "name":"spr_arrow_ingame",
+    "path":"sprites/spr_arrow_ingame/spr_arrow_ingame.yy",
   },
   "spriteMaskId":null,
   "visible":true,

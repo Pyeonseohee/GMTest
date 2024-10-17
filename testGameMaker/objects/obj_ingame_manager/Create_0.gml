@@ -70,7 +70,25 @@ function GameEnd()
 	is_round_end = true;
 	is_game_end = true;
 	
-	show_message("게임이 끝났습니다!!!!!");
+	winner = NULL;
+	var _idx = NULL;
+	var win_score = [0, 0];
+	for(var _i = 0; _i < array_length(roundScore); _i++)
+	{
+		win_score[roundScore[current_round]]++;
+	}
+	
+	if(win_score[0] > win_score[1])
+	{
+		_idx = 0;
+	}
+	else if(win_score[0] < win_score[1])
+	{
+		_idx = 1;
+	}
+	
+	var _playerName = global.playerArray[_idx].GetName();
+	obj_ingame_ui_manager.ShowGameOver(_playerName);
 	
 	CO_SCOPE = id;
 	var _co = CO_BEGIN
@@ -89,20 +107,37 @@ function RoundEnd()
 	{
 		instance_destroy(global.playerArray[_i]);
 	}
+	
+	if(instance_exists(obj_skill))
+	{
+		for(var _i = 0; _i < instance_number(obj_skill); _i++)
+		{
+			instance_destroy(instance_find(obj_skill, _i));
+		}
+	}
 	global.playerArray = [];
 	obj_ingame_ui_manager.ShowGameOver(_playerName);
 	
 	CO_SCOPE = id;
 	var _co = CO_BEGIN
 	DELAY 2000 THEN
-	obj_ingame_ui_manager.HideGameOver();
-	obj_ingame_ui_manager.StartCountDown();
+	if(instance_exists(obj_ingame_ui_manager))
+	{
+		obj_ingame_ui_manager.HideGameOver();
+		obj_ingame_ui_manager.StartCountDown();
+	}
 	DELAY 3000 THEN 
-	obj_ingame_ui_manager.EndCountDown();
-	obj_ingame_ui_manager.ShowGameStart();
-	RoundStart();
+	if(instance_exists(obj_ingame_ui_manager))
+	{
+		obj_ingame_ui_manager.EndCountDown();
+		obj_ingame_ui_manager.ShowGameStart();
+		RoundStart();
+	}
 	DELAY 2000 THEN
-	obj_ingame_ui_manager.HideGameStart();
+	if(instance_exists(obj_ingame_ui_manager))
+	{
+		obj_ingame_ui_manager.HideGameStart();
+	}
 	CO_END
 }
 

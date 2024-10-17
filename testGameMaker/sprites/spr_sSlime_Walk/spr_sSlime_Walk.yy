@@ -3,7 +3,7 @@
   "%Name":"spr_sSlime_Walk",
   "bboxMode":2,
   "bbox_bottom":45,
-  "bbox_left":25,
+  "bbox_left":27,
   "bbox_right":47,
   "bbox_top":31,
   "collisionKind":1,

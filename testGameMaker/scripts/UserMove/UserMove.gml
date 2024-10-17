@@ -82,16 +82,16 @@ function MoveHorizontal(_dir, _spd = 15)
 {	
 	if(_dir < 0) // 왼쪽으로 이동
 	{
-		image_angle = 0;
+		//image_angle = 0;
 		image_xscale = -2;
-		x += _dir * _spd;
+		
 	}
 	else // 오른쪽으로 이동
 	{
-		image_angle = 0;
+		//image_angle = 0;
 		image_xscale = 2;
-		x += _dir * _spd;
 	}
+	x += _dir * _spd;
 }
 
 function Jump()

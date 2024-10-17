@@ -55,8 +55,9 @@ function GetLeftAllSkillCoolTime()
 	return skillCoolTimeArray;
 }
 
-function ReceiveBomb()
+function ReceiveBomb(_bombIns)
 {
+	bombIns = _bombIns;
 	infected = true;
 	_time = 0;
 }

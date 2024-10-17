@@ -109,7 +109,6 @@ function AddArrowSkill(_ins, _idx)
 	
 	SetElementDrawer(self, DRAWER{
 		draw_frame_roundedGlow(_x1, _y1, _x2, _y2, 0.5, c_silver, _xscale);
-		draw_sprite_ext(sp_icon_pin_01, 0, (_x1+_x2)/2, (_y1+_y2)/2, _xscale, _yscale, 0, c_white, _alpha);
 	});
 	
 	with(AddElement(0, 0, 0, 0, self))

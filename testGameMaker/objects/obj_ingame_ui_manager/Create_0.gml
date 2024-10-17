@@ -117,8 +117,7 @@ function AddSideBar()
 }
 #endregion
 
-#region About CountDown
-
+#region About Round
 function ShowGameStart()
 {
 	gameStartElem = AddElement(0, 0, display_get_gui_width(), display_get_gui_height());
@@ -173,6 +172,10 @@ function HideGameOver()
 	}
 }
 
+#endregion
+
+#region About CountDown
+
 function StartCountDown()
 {
 	countDownElem = AddElement(0, 0, display_get_gui_width(), display_get_gui_height());
@@ -215,17 +218,6 @@ function EndCountDown()
 		}
 	}
 	global.leftCountDown = COUNT_DOWN;
-}
-
-
-#endregion
-
-#region About Score
-
-function ExplainSkill()
-{
-	with(AddElement(0, 0, display_get_gui_width(), display_get_gui_height()))
-	{}
 }
 #endregion
 

@@ -15,6 +15,11 @@ function SetCollisionTile(_obj)
 	collision_tile = _obj
 }
 
+function GetCollisionTile()
+{
+	return collision_tile;
+}
+
 function StartMove()
 {
 	
