@@ -1,4 +1,3 @@
-
 if(infected)
 {
 	DrawBombEffectShader();
@@ -6,6 +5,5 @@ if(infected)
 else
 {
 	draw_self();
-	shader_reset();
-	
+	shader_reset();	
 }

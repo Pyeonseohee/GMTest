@@ -22,7 +22,7 @@ if(_obj != NULL)
 		
 		if(IsSticked())
 		{
-			if(GetEndStick())
+			if(is_end_stick)
 			{
 				radius = 0;
 			}

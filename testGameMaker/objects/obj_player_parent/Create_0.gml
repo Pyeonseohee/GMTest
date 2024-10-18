@@ -6,6 +6,7 @@ is_dead = false;
 gravity_strength = 0.5; // 중력 세기
 vspeed = 0; // 수직 속도
 infected = false;
+can_remove = false;
 
 #region 셰이더
 _uniColor = shader_get_uniform(BombEffect, "u_colour");
@@ -59,13 +60,18 @@ function ReceiveBomb(_bombIns)
 {
 	bombIns = _bombIns;
 	infected = true;
-	_time = 0;
+	CO_SCOPE = id;
+	var _co = CO_BEGIN 
+	DELAY 1000 THEN
+	can_remove = true;
+	CO_END
 }
 
 function RemoveBomb()
 {
+	bombIns = NULL;
 	infected = false;
-	_time = 0;
+	can_remove = false;
 }
 
 function SparkTheBomb()

@@ -8,12 +8,14 @@ sword_direction = NULL;
 is_start_stick = false;
 is_end_stick = false;
 is_sticked = false;
+invokePlayer = NULL;
 
 
-function CreateSword(_obj, _dir)
+function CreateSword(_obj, _dir, _invokeIns)
 {
 	SetStickedGround(_obj);
 	SetDir(_dir);
+	SetInvokePlayer(_invokeIns);
 	CO_SCOPE = id
 	var co = CO_BEGIN
 	DELAY 2000 THEN
@@ -24,6 +26,7 @@ function CreateSword(_obj, _dir)
 function StickSword()
 {
 	sprite_index = spr_sword;
+	object_set_mask(obj_sword, spr_sword);
 	is_sticked = true;
 	check_collision = true;
 }
@@ -37,6 +40,7 @@ function EndStickSword()
 function StartStick()
 {
 	is_start_stick = true;
+	audio_play_sound(sound_thunder, 0, false);
 }
 
 #region GET
@@ -70,6 +74,11 @@ function GetStartStick()
 	return is_start_stick;
 }
 
+function GetInvokePlayer()
+{
+	return invokePlayer;
+}
+
 #endregion
 
 #region SET
@@ -82,6 +91,11 @@ function SetStickedGround(_obj)
 function SetDir(_dir)
 {
 	sword_direction = _dir; 
+}
+
+function SetInvokePlayer(_ins)
+{
+	invokePlayer = _ins;
 }
 
 #endregion

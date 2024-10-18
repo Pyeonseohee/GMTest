@@ -9,18 +9,34 @@ if(_current_angle > 360)
 
 if(GetCollisionTile() == NULL) return ;
 
-var _spd = 7;
-var cx = GetCollisionTile().x;
-var cy = GetCollisionTile().y;
+
+if(GetStartMove())
+{
+	var _spd = 7;
+	var cx = GetCollisionTile().x;
+	var cy = GetCollisionTile().y;
 	
-// 원형 경계 따라 이동
-var radius = GetCollisionTile().sprite_width / 2;
-var dir = point_direction(cx, cy, x, y); // 플레이어와 중심 간의 각도 계산
+	// 원형 경계 따라 이동
+	var radius = GetCollisionTile().sprite_width / 2;
+	var dir = point_direction(cx, cy, x, y); // 플레이어와 중심 간의 각도 계산
 
-image_angle = dir - 90;
-_current_angle += _spd;		
+	image_angle = dir - 90;
+	_current_angle += _spd;		
 
-var test_dir = dir + _spd;
+	var test_dir = dir + _spd;
 		
-x = cx + lengthdir_x(radius, test_dir);
-y = cy + lengthdir_y(radius, test_dir);
+	x = cx + lengthdir_x(radius, test_dir);
+	y = cy + lengthdir_y(radius, test_dir);
+}
+else
+{
+	var cx = GetCollisionTile().x;
+	var cy = GetCollisionTile().y;
+	
+	// 원형 경계 따라 이동
+	var radius = GetCollisionTile().sprite_width / 2;
+	var dir = point_direction(cx, cy, x, y); // 플레이어와 중심 간의 각도 계산
+		
+	x = cx + lengthdir_x(radius, firstDir);
+	y = cy + lengthdir_y(radius, firstDir);
+}

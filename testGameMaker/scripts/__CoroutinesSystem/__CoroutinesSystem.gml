@@ -1,8 +1,6 @@
 #macro __COROUTINES_VERSION  "1.4.0"
 #macro __COROUTINES_DATE     "2022-07-31"
 
-show_debug_message("Welcome to Coroutines by @jujuadams! This is version " + __COROUTINES_VERSION + ", " + __COROUTINES_DATE);
-
 
 
 enum __COROUTINE_ESCAPE_STATE
@@ -72,7 +70,6 @@ function __CoroutineTrace()
         ++_i;
     }
     
-    show_debug_message(_string);
 }
 
 function __CoroutineError()

@@ -1,6 +1,6 @@
 {
   "$GMSound":"",
-  "%Name":"sound_wind",
+  "%Name":"sound_dash",
   "audioGroupId":{
     "name":"audiogroup_default",
     "path":"audiogroups/audiogroup_default",
@@ -9,8 +9,8 @@
   "bitRate":128,
   "compression":0,
   "conversionMode":0,
-  "duration":0.914281,
-  "name":"sound_wind",
+  "duration":0.984,
+  "name":"sound_dash",
   "parent":{
     "name":"사운드",
     "path":"folders/사운드.yy",
@@ -19,7 +19,7 @@
   "resourceType":"GMSound",
   "resourceVersion":"2.0",
   "sampleRate":44100,
-  "soundFile":"sound_wind.mp3",
+  "soundFile":"sound_dash.mp3",
   "type":0,
   "volume":1.0,
 }

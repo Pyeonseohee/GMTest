@@ -1,22 +1,24 @@
 // Script assets have changed for v2.3.0 see
 // https://help.yoyogames.com/hc/en-us/articles/360005277377 for more information
-#macro SKILL_COUNT 7
+#macro SKILL_COUNT 6
 #macro INF infinity
 enum SKILL
 {
-	RECREATE = 0,
-	SWORD = 1,
-	ARROW = 2,
-	VOLLEYBALL = 3,
-	TELEPORT = 4,
-	DASH = 5,
-	BOMB = 6
+	SWORD = 0,
+	ARROW = 1,
+	VOLLEYBALL = 2,
+	TELEPORT = 3,
+	DASH = 4,
+	BOMB = 5
 }
+/*
+skillData = {
+	"SWORD" : { skillFunc : SkillSword , skillcoolTime : },
+}*/
 
 function InitSkill()
 {
 	skillInvokeFunc = [
-		SkillRecreate,
 		SkillSword,
 		SkillArrow,
 		SkillVolleyBall,
@@ -30,12 +32,6 @@ function InvokeSkill(_invokeInstance, _targetInstance, skill)
 {
 	skillInvokeFunc[skill](_invokeInstance, _targetInstance);
 }
-
-#region 부활 스킬
-function SkillRecreate(_invokeInstance, _targetInstance)
-{
-}
-#endregion
 
 #region 검 스킬
 function SkillSword(_invokeInstance, _targetInstance)
@@ -60,11 +56,15 @@ function SkillSword(_invokeInstance, _targetInstance)
 	{
 		for(var _i = 0; _i < instance_number(obj_sword); _i++)
 		{
-			instance_destroy(instance_find(obj_sword, _i));
+			var sword_ins = instance_find(obj_sword, _i);
+			if(sword_ins.GetInvokePlayer() == _invokeInstance)
+			{
+				instance_destroy(sword_ins);
+			}
 		}
 	}
 	var sword_obj = instance_create_layer(0, 0, "Instances", obj_sword, {image_xscale: 3, image_yscale: 5, depth: 101, image_angle: sword_image_dir});
-	sword_obj.CreateSword(collision_obj, dir);
+	sword_obj.CreateSword(collision_obj, dir, _invokeInstance);
 }
 #endregion
 
@@ -86,6 +86,7 @@ function SkillArrow(_invokeinstance, _targetInstance)
 		direction: arrow_move_dir,
 		speed: 20,
 	});
+	audio_play_sound(sound_arrow, 0, false);
 	arrow_instance.invokePlayer = _invokeinstance;
 }
 #endregion
@@ -93,20 +94,23 @@ function SkillArrow(_invokeinstance, _targetInstance)
 #region 배구공 스킬
 function SkillVolleyBall(_invokeInstance, _targetInstance)
 {
+	show_debug_message(string(_invokeInstance));
 	var collision_obj = GetCollositionTileObj();
 	if(collision_obj == NULL) return ;
 	
 	var volleyball_instance = instance_create_layer(_invokeInstance.x, _invokeInstance.y, "Instances", obj_volleyball);
 	
+	audio_play_sound(sound_volleyball, 0, false);
 	volleyball_instance.invokePlayer = _invokeInstance;
 	volleyball_instance.SetCollisionTile(collision_obj);
+	volleyball_instance.InitStartDir();
 }
 #endregion
 
 #region 텔레포트 스킬
 function SkillTeleport(_invokeInstance, _targetInstance)
 {
-	audio_play_sound(sound_teleport, 0, false);
+	audio_sound_gain(audio_play_sound(sound_teleport, 0 , false), 0.9, 0);
 	MoveOpponent();
 }
 #endregion
@@ -115,7 +119,7 @@ function SkillTeleport(_invokeInstance, _targetInstance)
 #region 대시 스킬
 function SkillDash(_invokeInstance, _targetInstance)
 {
-	audio_sound_set_track_position(audio_play_sound(sound_wind, 0, false), 0.3);
+	audio_sound_set_track_position(audio_play_sound(sound_dash, 0, false), 0.25);
 	effect_create_below(ef_smokeup, _invokeInstance.x, _invokeInstance.y, 500, c_orange);
 	
 	if(GetIsOnGround())
@@ -154,7 +158,6 @@ function SkillDash(_invokeInstance, _targetInstance)
 #region 폭탄 스킬
 function SkillBomb(_invokeInstance, _targetInstance)
 {
-	
 	var bomb = instance_create_layer(_invokeInstance.x, _invokeInstance.y, DEFAULT_LAYER, obj_bomb );
 	_invokeInstance.ReceiveBomb(bomb);
 	bomb.ChangeTarget(_invokeInstance);

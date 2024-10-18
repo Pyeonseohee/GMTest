@@ -153,7 +153,7 @@ function ShowGameOver(_winPlayerName)
 	{
 		var _winnerName = _winPlayerName;
 		SetElementAlignment(self, AL_CENTER);
-		with(AddLabel(0, 0, 0, 0, "게임 오버!!\n\n" + string(_winnerName) + "가 이겼습니다!", self))
+		with(AddLabel(0, 0, 0, 0, "게임 오버!!\n\n" + string(_winnerName) + "이가 이겼습니다!", self))
 		{
 			SetLabel(self, c_black, 2, 2, 1, 10, AL_CENTER); // 가운데 중앙정렬
 			SetElementFit(self, FIT_FULL);
@@ -166,6 +166,60 @@ function HideGameOver()
 	if(instance_exists(gameOverElem))
 	{
 		with(gameOverElem)
+		{
+			SetElementRemove(self);
+		}
+	}
+}
+
+function ShowWinner(_winnerIns)
+{
+	winnerElem = AddElement(0, 0, display_get_gui_width(), display_get_gui_height())
+	
+	with(winnerElem)
+	{
+		var _ins = _winnerIns
+		
+		SetElementDrawer(self, DRAWER{
+			draw_sprite_ext(sp_square_16_16, 0, (_x1+_x2)/2, (_y1+_y2)/2, (_x2-_x1)/16, (_y2-_y1)/16, 0, c_black, 0.5);
+		});
+		SetElementAlignment(self, AL_CENTER);
+		
+		with(AddLabel(0, 0, 0, 0, "경기 끝!!\n\n" + string(_ins.GetName()) + "이가 이겼습니다!", self))
+		{
+			SetLabel(self, c_black, 2, 2, 1, 10, AL_CENTER); // 가운데 중앙정렬
+			SetElementFit(self, FIT_FULL);
+		}
+		
+		with(AddButton(0, -1*150, 500, 100, self))
+		{
+			SetElementAlignment(self, AL_DOWNCENTER);
+			SetElementDrawer(self, DRAWER{
+				draw_frame_roundedEdgeOrange(_x1, _y1, _x2, _y2, _alpha, _xscale);
+			});
+	
+			UILIb_button_scaleAnimation(self);
+	
+			with (AddLabel(0, 0, 0, 0, "홈으로", self)) {
+				SetLabel(self, c_black, 2, 2, 1, 10, AL_CENTER); // 가운데 중앙정렬
+				SetElementFit(self, FIT_FULL);
+			}
+	
+			SetButtonCallback(self, CALLBACK{
+				room_goto(r_Home);
+			});
+			
+		}
+		
+	}
+	
+}
+
+function HideWinner()
+{
+	if(instance_exists(winnerElem))
+	{
+		with(winnerElem)
 		{
 			SetElementRemove(self);
 		}
@@ -222,6 +276,6 @@ function EndCountDown()
 #endregion
 
 #region UI 호출
-AddTopBar();
+//AddTopBar();
 AddSideBar();
 #endregion

@@ -16,7 +16,6 @@ global.all_skill =
 
 global.all_skill_spr = 
 [
-	sp_icon_rotation_01,
 	sp_icon_sword_01,
 	sp_icon_pin_01,
 	sp_icon_ball_01,

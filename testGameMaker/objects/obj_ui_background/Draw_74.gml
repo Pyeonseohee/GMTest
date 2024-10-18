@@ -1,7 +1,6 @@
 
 if (backgroundNowName != -1) {
 	if (!variable_struct_exists(backgroundImageWaitStruct, backgroundNowName)) {
-		show_debug_message(string(backgroundNowName)+" : 배경 이미지가 없습니다.")
 		exit;
 	}
 	

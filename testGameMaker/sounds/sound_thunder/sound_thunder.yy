@@ -1,0 +1,25 @@
+{
+  "$GMSound":"",
+  "%Name":"sound_thunder",
+  "audioGroupId":{
+    "name":"audiogroup_default",
+    "path":"audiogroups/audiogroup_default",
+  },
+  "bitDepth":1,
+  "bitRate":128,
+  "compression":0,
+  "conversionMode":0,
+  "duration":5.903673,
+  "name":"sound_thunder",
+  "parent":{
+    "name":"사운드",
+    "path":"folders/사운드.yy",
+  },
+  "preload":false,
+  "resourceType":"GMSound",
+  "resourceVersion":"2.0",
+  "sampleRate":44100,
+  "soundFile":"sound_thunder.mp3",
+  "type":0,
+  "volume":1.0,
+}

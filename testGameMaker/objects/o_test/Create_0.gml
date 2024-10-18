@@ -17,7 +17,7 @@ with(AddElement(0, 200, 500, 100))
 	}
 }
 
-with(AddButton(0, -1*_margin, _button_width, _button_height))
+with(AddButton(0, 0, _button_width, _button_height))
 {
 	SetElementAlignment(self, AL_CENTER);
 	SetElementDrawer(self, DRAWER{
@@ -33,27 +33,6 @@ with(AddButton(0, -1*_margin, _button_width, _button_height))
 	
 	SetButtonCallback(self, CALLBACK{
 		room_goto(r_GameReadyRoom);
-	});
-}
-#endregion
-
-#region 튜토리얼 버튼
-with(AddButton(0, _button_height + _margin, _button_width, _button_height))
-{
-	SetElementAlignment(self, AL_CENTER);
-	SetElementDrawer(self, DRAWER{
-		draw_frame_roundedEdgeOrange(_x1, _y1, _x2, _y2, _alpha, _xscale);
-	});
-	
-	UILIb_button_scaleAnimation(self);
-	
-	with (AddLabel(0, 0, 0, 0, "튜토리얼", self)) {
-		SetLabel(self, c_black, 2, 2, 1, 10, AL_CENTER);
-		SetElementFit(self, FIT_FULL);
-	}
-	
-	SetButtonCallback(self, CALLBACK{
-		room_goto(TutorialRoom);
 	});
 }
 #endregion

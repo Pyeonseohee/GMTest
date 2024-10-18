@@ -1,0 +1,25 @@
+{
+  "$GMSound":"",
+  "%Name":"s_thunder",
+  "audioGroupId":{
+    "name":"audiogroup_default",
+    "path":"audiogroups/audiogroup_default",
+  },
+  "bitDepth":1,
+  "bitRate":128,
+  "compression":1,
+  "conversionMode":0,
+  "duration":5.903673,
+  "name":"s_thunder",
+  "parent":{
+    "name":"ingame_sfx",
+    "path":"folders/Sounds/ingame_sfx.yy",
+  },
+  "preload":false,
+  "resourceType":"GMSound",
+  "resourceVersion":"2.0",
+  "sampleRate":44100,
+  "soundFile":"s_thunder",
+  "type":0,
+  "volume":1.0,
+}

@@ -138,9 +138,9 @@ function Drop()
 		if (dir >= 180 && dir <= 360){
 	        vspeed = 7;  // 아래로 떨어짐
 	    }
-		else{
+		else
 			return ;
-		}
+
 	
 		SetIsOnGround(false);
 		SetCanDrop(false);

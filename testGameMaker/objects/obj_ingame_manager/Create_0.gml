@@ -52,8 +52,7 @@ function StartCountDown()
 
 #region About 라운드
 current_round = 0;
-maxRound = 3;
-maxScore = 2;
+maxScore = 5;
 
 
 is_round_end = true;
@@ -73,28 +72,23 @@ function GameEnd()
 	winner = NULL;
 	var _idx = NULL;
 	var win_score = [0, 0];
+	
+	with(obj_skill)
+	{
+		instance_destroy();
+	}
+	
 	for(var _i = 0; _i < array_length(roundScore); _i++)
 	{
 		win_score[roundScore[current_round]]++;
 	}
 	
 	if(win_score[0] > win_score[1])
-	{
 		_idx = 0;
-	}
 	else if(win_score[0] < win_score[1])
-	{
 		_idx = 1;
-	}
 	
-	var _playerName = global.playerArray[_idx].GetName();
-	obj_ingame_ui_manager.ShowGameOver(_playerName);
-	
-	CO_SCOPE = id;
-	var _co = CO_BEGIN
-	DELAY 2000 THEN
-	room_goto(r_Home);
-	CO_END
+	obj_ingame_ui_manager.ShowWinner(global.playerArray[_idx]);
 }
 
 function RoundEnd()
@@ -102,19 +96,17 @@ function RoundEnd()
 	var _playerName = global.playerArray[roundScore[current_round]].GetName();
 	is_round_end = true;
 	
-	  
+	with(obj_skill)
+	{
+		instance_destroy();
+	}
+	
 	for(var _i = 0; _i < playerCount; _i++)
 	{
 		instance_destroy(global.playerArray[_i]);
 	}
 	
-	if(instance_exists(obj_skill))
-	{
-		for(var _i = 0; _i < instance_number(obj_skill); _i++)
-		{
-			instance_destroy(instance_find(obj_skill, _i));
-		}
-	}
+	
 	global.playerArray = [];
 	obj_ingame_ui_manager.ShowGameOver(_playerName);
 	
@@ -145,8 +137,8 @@ function RoundStart()
 {
 	is_round_end = false;
 	current_round++;
-	AddPlayer(0, player1KeyMap, "P1");
-	AddPlayer(1, player2KeyMap, "P2", c_yellow);
+	AddPlayer(0, player1KeyMap, "하얀 꼬물");
+	AddPlayer(1, player2KeyMap, "노랑 꼬물", c_yellow);
 	ResetSkillLeftCoolTime();
 }
 
@@ -188,23 +180,23 @@ function CreateMap(_mapType)
 			break;
 		case 1:
 			groundArray[0] = instance_create_layer(0, 0, "Environments", obj_tile,
-			{image_xscale: 3, image_yscale: 3});
+			{image_xscale: 3, image_yscale: 3, image_blend: #f4a261});
 			groundArray[0].SetInitPos(0);
 			groundCount++;
 			
 			
 			groundArray[1] = instance_create_layer(0, 0, "Environments", obj_tile,
-			{image_xscale: 3, image_yscale: 3});
+			{image_xscale: 3, image_yscale: 3, image_blend: #e76f51});
 			groundArray[1].SetInitPos(pi/2);
 			groundCount++;
 			
 			groundArray[2] = instance_create_layer(0, 0, "Environments", obj_tile,
-			{image_xscale: 3, image_yscale: 3});
+			{image_xscale: 3, image_yscale: 3, image_blend: #2a9d8f});
 			groundArray[2].SetInitPos(pi);
 			groundCount++;
 		
 			groundArray[3] = instance_create_layer(0, 0,  "Environments", obj_tile,
-			{image_xscale: 3, image_yscale: 3});
+			{image_xscale: 3, image_yscale: 3, image_blend: #e9c46a});
 			groundArray[3].SetInitPos(3*pi/2);
 			groundCount++;
 			break;
@@ -219,11 +211,11 @@ function AddPlayer(_idx, stu_keyMap, _name, _color = c_white)
 	{
 		var _ground = groundArray[_i];
 		var _hei = _ground.sprite_height/2;
-		if(_ground.y - _hei * 3 > 0)
+		if(_ground.y - _hei * 2 > 0)
 		{
 			var offset = 10;
 			var test_x = _ground.x;
-			var test_y = _ground.y - _hei * 3 - offset;
+			var test_y = _ground.y - _hei * 2 - offset;
 			global.playerArray[_idx] = instance_create_layer(test_x, test_y, DEFAULT_LAYER, obj_player_parent,
 			{
 				image_xscale: 2,
@@ -254,12 +246,11 @@ function GetTargetEnemy(_ins)
 #region 스킬 관련
 skill_slot_count = 3;
 all_skill_coolTime_Array = [
-	INF,
 	3,
-	5,
-	5,
+	4,
+	4,
 	2,
-	3,
+	2,
 	10
 ];
 

@@ -5,6 +5,7 @@ offset = 50;
 current_timer = 0;
 timeout = 10;
 targetInstance = NULL;
+soundElem = NULL;
 image_speed = 0.5;
 
 function GetTargetIns()

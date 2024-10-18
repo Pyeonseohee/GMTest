@@ -3,7 +3,8 @@
 
 if(!check_collision) return ;
 if(global.gameManager.IsGameEnd()) return ;
-if(other.IsDead()) return ;
-else other.Dead();
 
-alarm[0] = 3 * room_speed;
+if(other.IsDead())
+	return ;
+else
+	other.Dead();
