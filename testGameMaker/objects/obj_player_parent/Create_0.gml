@@ -158,64 +158,82 @@ function MatchKey(stu_keyMap)
 }
 #endregion
 
+
+var gp_num = gamepad_get_device_count();
+gamepad_idx = 0;
+for (var i = 0; i < gp_num; i++;)
+{
+    if gamepad_is_connected(i)
+	{
+		show_message(string(i));
+		gamepad_idx = i;
+	}
+	
+	if(playerIdx == 0)
+	{
+		gamepad_idx = 0;
+	}
+}
+
 #region About 키 입력 체크
 function CheckUserInput()
 {
-	if(keyboard_check_pressed(leftKey))
+	if(keyboard_check_pressed(leftKey) || gamepad_button_check_pressed(gamepad_idx, gp_padl))
 	{
-		if(keyboard_check(rightKey) || keyboard_check_pressed(rightKey))
+		show_debug_message("되니???");
+		if(keyboard_check(rightKey) || keyboard_check_pressed(rightKey) || gamepad_button_check(gamepad_idx, gp_padr) || gamepad_button_check_pressed(gamepad_idx, gp_padr))
 			NoneHorizontalKey();
 		else
 			DownLeftKey();
 	}
 
-	if(keyboard_check_pressed(rightKey))
+	if(keyboard_check_pressed(rightKey) || gamepad_button_check_pressed(gamepad_idx, gp_padr))
 	{
-		if(keyboard_check(leftKey) || keyboard_check_pressed(leftKey))
+		if(keyboard_check(leftKey) || keyboard_check_pressed(leftKey) || gamepad_button_check(gamepad_idx, gp_padl) || gamepad_button_check_pressed(gamepad_idx, gp_padl))
 			NoneHorizontalKey();
 		else
 			DownRightKey();
 	}
 
-	if(keyboard_check_released(leftKey))
+	if(keyboard_check_released(leftKey) || gamepad_axis_value(gamepad_idx, gp_axislh) < -0.5)
 	{
-		if(keyboard_check(rightKey) || keyboard_check_pressed(rightKey))
+		if(keyboard_check(rightKey) || keyboard_check_pressed(rightKey) || gamepad_button_check(gamepad_idx, gp_padr) || gamepad_button_check_pressed(gamepad_idx, gp_padr))
 			DownRightKey();
 		else
 			NoneHorizontalKey();
 	}
 
-	if(keyboard_check_released(rightKey))
+	if(keyboard_check_released(rightKey) || gamepad_button_check_released(gamepad_idx, gp_padr))
 	{
-		if(keyboard_check(leftKey) || keyboard_check_pressed(leftKey))
+		if(keyboard_check(leftKey) || keyboard_check_pressed(leftKey) || gamepad_button_check(gamepad_idx, gp_padl) || gamepad_button_check_pressed(gamepad_idx, gp_padl))
 			DownLeftKey();
 		else
 			NoneHorizontalKey();
 	}
 
-	if(keyboard_check_pressed(jumpKey))
+	if(keyboard_check_pressed(jumpKey) || gamepad_button_check_pressed(gamepad_idx, gp_padu))
 	{
 		if(can_jump) Jump();
 	}
 	
-	if(keyboard_check_pressed(dropKey))
+	if(keyboard_check_pressed(dropKey) || gamepad_button_check_pressed(gamepad_idx, gp_padd))
 	{
 		if(can_drop) Drop();
 	}
 	
-	if(keyboard_check_pressed(skill1) && obj_ingame_manager.GetLeftSkillCoolTime(GetIndex(), 0) == 0)
+	if((keyboard_check_pressed(skill1)  || gamepad_button_check_pressed(gamepad_idx, gp_face4)) && obj_ingame_manager.GetLeftSkillCoolTime(GetIndex(), 0) == 0)
 	{
 		obj_ingame_manager.ResetLeftSkillCoolTime(GetIndex(), 0, user_skill_list[0]);
 		InvokeSkill(id, global.gameManager.GetTargetEnemy(self), user_skill_list[0]);
 	}
 
-	if(keyboard_check_pressed(skill2) && obj_ingame_manager.GetLeftSkillCoolTime(GetIndex(), 1) == 0)
+	if((keyboard_check_pressed(skill2) || gamepad_button_check_pressed(gamepad_idx, gp_face3))&& obj_ingame_manager.GetLeftSkillCoolTime(GetIndex(), 1) == 0)
 	{
 		obj_ingame_manager.ResetLeftSkillCoolTime(GetIndex(), 1, user_skill_list[1]);
 		InvokeSkill(id, global.gameManager.GetTargetEnemy(self), user_skill_list[1]);
 	}
 
-	if(keyboard_check_pressed(skill3) && obj_ingame_manager.GetLeftSkillCoolTime(GetIndex(), 2) == 0)
+	if((keyboard_check_pressed(skill3) || gamepad_button_check_pressed(gamepad_idx, gp_face2)) && obj_ingame_manager.GetLeftSkillCoolTime(GetIndex(), 2) == 0)
 	{
 		obj_ingame_manager.ResetLeftSkillCoolTime(GetIndex(), 2, user_skill_list[2]);
 		InvokeSkill(id, global.gameManager.GetTargetEnemy(self), user_skill_list[2]);
